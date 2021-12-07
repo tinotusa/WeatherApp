@@ -34,6 +34,9 @@ struct HomeView: View {
                 await viewModel.searchAPI(for: searchText)
             }
         }
+        .onAppear {
+            URLCache.shared.memoryCapacity = 1024 * 1024 * 256
+        }
     }
 }
 

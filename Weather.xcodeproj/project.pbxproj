@@ -22,6 +22,7 @@
 		213631E3275B6598004D6261 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213631E2275B6598004D6261 /* NetworkManager.swift */; };
 		213631E6275B9F89004D6261 /* GeoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213631E5275B9F89004D6261 /* GeoResponse.swift */; };
 		213631E8275B9FA2004D6261 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213631E7275B9FA2004D6261 /* WeatherModel.swift */; };
+		21857C0C275F64C4004D4825 /* WeatherResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21857C0B275F64C4004D4825 /* WeatherResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		213631E2275B6598004D6261 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		213631E5275B9F89004D6261 /* GeoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoResponse.swift; sourceTree = "<group>"; };
 		213631E7275B9FA2004D6261 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
+		21857C0B275F64C4004D4825 /* WeatherResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 			children = (
 				213631E5275B9F89004D6261 /* GeoResponse.swift */,
 				213631E7275B9FA2004D6261 /* WeatherModel.swift */,
+				21857C0B275F64C4004D4825 /* WeatherResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				213631D9275B5F7D004D6261 /* SuggestionsView.swift in Sources */,
 				212AA7D32754E5010061CCBC /* HomeView.swift in Sources */,
 				212AA7FB2754E8E30061CCBC /* AddLocationView.swift in Sources */,
+				21857C0C275F64C4004D4825 /* WeatherResponse.swift in Sources */,
 				213631DC275B5FC2004D6261 /* WeatherRow.swift in Sources */,
 				213631E8275B9FA2004D6261 /* WeatherModel.swift in Sources */,
 				213631E3275B6598004D6261 /* NetworkManager.swift in Sources */,

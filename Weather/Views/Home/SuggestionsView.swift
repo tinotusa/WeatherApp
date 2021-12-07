@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 struct SuggestionsView: View {
     @EnvironmentObject var weatherViewModel: WeatherViewModel
@@ -29,6 +28,7 @@ struct SuggestionsView: View {
                 }
             }
             .frame(maxWidth: .infinity)
+            .border(.red)
         }
         .background(.thinMaterial)
     }

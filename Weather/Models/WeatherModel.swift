@@ -17,6 +17,7 @@ struct WeatherModel {
            return
         }
         locations.append(location)
+        save()
     }
     
     mutating func searchAPI(for searchTerm: String) async {
