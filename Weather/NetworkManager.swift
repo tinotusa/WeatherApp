@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct NetworkManager {
+    // MARK: - Openweathermap
     static func loadSuggestions(for place: String) async -> [GeoResponse] {
         var responses: [GeoResponse] = []
         guard var urlComponents = URLComponents(string: Constants.baseGeoURL) else {
@@ -38,62 +39,96 @@ struct NetworkManager {
         return responses
     }
     
-    static func loadCurrentWeather(for place: String) async -> WeatherResponse {
-        var weatherResponse = WeatherResponse.invalidResponse
-        
-        // url
-        guard var urlComponents = URLComponents(string: Constants.baseWeatherURL) else {
-            fatalError("Failed to construct URL from string: \(Constants.baseWeatherURL)")
-        }
-
-        let urlParameters = [
-            "q": place,
-            "appid": Constants.weatherAPIKey,
-            "units": Locale.current.usesMetricSystem ? "metric" : "imperial",
-            "lang": Locale.current.languageCode ?? "en"
-        ]
-        
-        let queries = urlParameters.map { param, value in
-            URLQueryItem(name: param, value: value)
+    private static func buildURL(string: String, parameters: [String: String]) -> URL? {
+        guard var urlComponents = URLComponents(string: string) else {
+            fatalError("Error \(#function) failed to create url from string: \(string)")
         }
         
-        urlComponents.queryItems = queries
-        // load data
-        do {
-            let request = URLRequest(url: urlComponents.url!)
-            let (data, response) = try await URLSession.shared.data(for: request)
-            // decode
-            let httpResponse = response as! HTTPURLResponse
-            guard (200 ..< 299).contains(httpResponse.statusCode) else {
-                print("Invalid response from server")
-                return weatherResponse
-            }
-            weatherResponse = try JSONDecoder().decode(WeatherResponse.self, from: data)
-        } catch {
-            print("Error: Failed to decode Weather url.\n\(error)")
+        urlComponents.queryItems = parameters.map { parameter, value in
+            URLQueryItem(name: parameter, value: value)
         }
-        return weatherResponse
+        return urlComponents.url
     }
     
-    static func loadIcon(name: String) async -> UIImage? {
-        var icon: UIImage? = nil
-        guard let url = URL(string: "https://openweathermap.org/img/wn/\(name)@2x.png") else {
-            return icon
+    static func loadDailyWeather(for location: Coordinates) async -> DailyWeatherResponse? {
+        let queries = [
+            "lat": "\(location.lat)",
+            "lon": "\(location.lon)",
+            "appid": Constants.weatherAPIKey,
+            "cnt": "7",
+            "units": Locale.current.usesMetricSystem ? "metric" : "imperial",
+            "lang": Locale.current.languageCode ?? "en",
+            "exclude": "current,minutely,hourly",
+        ]
+        
+        guard let url = buildURL(string: Constants.baseDailyWeatherURL, parameters: queries) else {
+            fatalError("Error \(#function) failed to load daily weather from \(Constants.baseDailyWeatherURL)")
         }
         
         do {
-            let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
+            let request = URLRequest(url: url)
             let (data, response) = try await URLSession.shared.data(for: request)
             let httpResponse = response as! HTTPURLResponse
             guard (200 ..< 299).contains(httpResponse.statusCode) else {
-                print("Error loadIcon: Invalid response from server")
-                return icon
+                print("Server reponse error code: \(httpResponse.statusCode)")
+                return nil
             }
-            icon = UIImage(data: data)
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .secondsSince1970
+            return try decoder.decode(DailyWeatherResponse.self, from: data)
         } catch {
-            print("Failed to load icon for \(name)")
-            return icon
+            print("Error in \(#function). Failed to decode data from url.\n\(error)")
         }
-        return icon
+        return nil
     }
+    
+    // MARK: - Pexels
+    static func loadImage(name: String) async -> UnsplashedSearchResponse? {
+        let parameters = [
+            "query": name,
+            "orientation": "landscape",
+            "client_id": Constants.unsplashedAPIKey
+        ]
+        
+        guard let url = buildURL(string: Constants.unsplashedURL, parameters: parameters) else {
+            fatalError("Failed to construct url from \(Constants.unsplashedURL) with parameters: \(parameters)")
+        }
+        
+        let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
+        
+        var photos: UnsplashedSearchResponse? = nil
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            let httpResponse = response as! HTTPURLResponse
+            guard (200 ... 299).contains(httpResponse.statusCode) else {
+                fatalError("Error \(#function). Invalid server response code \(httpResponse.statusCode)")
+            }
+            photos = try JSONDecoder().decode(UnsplashedSearchResponse.self, from: data)
+        } catch {
+            print("Error \(#function) failed to decode search response.\n\(error)")
+        }
+        return photos
+    }
+}
+
+struct UnsplashedPhotoURLS: Codable {
+    let raw: URL
+    let full: URL
+    let regular: URL
+    let small: URL
+    let thumb: URL
+}
+
+struct UnsplashedPhoto: Codable, Identifiable {
+    let id: String
+    let width: Int
+    let height: Int
+    let color: String
+    // TODO: get user links for credit
+    let urls: UnsplashedPhotoURLS
+}
+
+struct UnsplashedSearchResponse: Codable {
+    let total: Int
+    let results: [UnsplashedPhoto]
 }

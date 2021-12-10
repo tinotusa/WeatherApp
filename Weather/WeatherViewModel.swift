@@ -15,9 +15,19 @@ final class WeatherViewModel: ObservableObject {
         get { weatherModel.locations }
         set { weatherModel.locations = newValue }
     }
+    
+    var currentWeather: [WeatherResponse] {
+        weatherModel.currentWeather
+    }
+    
+    var dailyWeather: [DailyWeatherResponse] {
+        weatherModel.dailyWeather
+    }
+    
     var hasLocations: Bool {
         !weatherModel.locations.isEmpty
     }
+    
     var suggestions: [GeoResponse] {
         weatherModel.suggestions
     }
@@ -38,8 +48,23 @@ final class WeatherViewModel: ObservableObject {
         weatherModel.save()
     }
     
-    func addLocation(_ location: GeoResponse) {
+    @MainActor
+    func addLocation(_ location: GeoResponse) async {
         weatherModel.addLocation(location)
+//        await weatherModel.loadCurrentWeather()
+        await weatherModel.loadDailyWeather()
+    }
+    
+    func removeWeather(_ weather: WeatherResponse) {
+        weatherModel.removeWeather(weather)
+    }
+    func removeWeather(named location: String) {
+        weatherModel.removeWeather(named: location)
+    }
+    
+    @MainActor
+    func loadDailyWeather() async {
+        await weatherModel.loadDailyWeather()
     }
     
     @MainActor

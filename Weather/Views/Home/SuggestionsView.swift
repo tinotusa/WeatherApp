@@ -19,7 +19,9 @@ struct SuggestionsView: View {
                 } else {
                     ForEach(weatherViewModel.suggestions) { suggestion in
                         Button {
-                            weatherViewModel.addLocation(suggestion)
+                            Task {
+                                await weatherViewModel.addLocation(suggestion)
+                            }
                             dismissSearch()
                         } label: {
                             Text(suggestion.text)

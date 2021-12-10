@@ -15,6 +15,10 @@ struct GeoResponse: Codable, Identifiable, Equatable {
     let state: String?
     let id = UUID()
     
+    var coord: Coordinates {
+        Coordinates(lon: lon, lat: lat)
+    }
+    
     enum CodingKeys: CodingKey {
         case name, lat, lon, country, state
     }

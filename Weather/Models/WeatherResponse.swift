@@ -7,9 +7,17 @@
 
 import Foundation
 
-struct Coordinates: Codable {
+struct Coordinates: Codable, Equatable {
     let lon: Double
     let lat: Double
+    
+    static func ==(_ lhs: Coordinates, _ rhs: Coordinates) -> Bool {
+        let epsilon = 0.1
+        return (
+            abs(lhs.lon - rhs.lon) <= epsilon &&
+            abs(lhs.lat - rhs.lat) <= epsilon
+        )
+    }
 }
 
 struct Weather: Codable {
@@ -47,7 +55,7 @@ struct Wind: Codable {
     let deg: Int
 }
 
-struct WeatherResponse: Codable {
+struct WeatherResponse: Codable, Identifiable {
     let id: Int
     let name: String
     let cod: Int
@@ -64,6 +72,23 @@ struct WeatherResponse: Codable {
         case id, name, cod, dt, visibility, base, wind, weather, main
         case coordinates = "coord"
         case system = "sys"
+    }
+    
+    private func formattedTemp(_ temp: Double) -> String {
+        let unit = Locale.current.usesMetricSystem ? "C" : "F"
+        return String(format: "%.0fº\(unit)", temp)
+    }
+    
+    var currentTemp: String {
+        formattedTemp(main.temp)
+    }
+    
+    var minTemp: String {
+        formattedTemp(main.tempMin)
+    }
+    
+    var maxTemp: String {
+        formattedTemp(main.tempMax)
     }
     
     static var invalidResponse: WeatherResponse {

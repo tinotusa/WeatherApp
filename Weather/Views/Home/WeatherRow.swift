@@ -7,79 +7,81 @@
 
 import SwiftUI
 
-
-
 struct WeatherRow: View {
     struct Constants {
         static let width = 50.0
         static let height = 50.0
     }
     
-    let location: GeoResponse
+    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    var weather: DailyWeatherResponse
     let colours: [Color] = [.red, .green, .blue]
-    @State private var weather: WeatherResponse = WeatherResponse.invalidResponse
-    @State private var icon: Image? = Image(systemName: "xmark")
-
+    @State private var imageURL: URL? = nil
+    
     var body: some View {
-        NavigationLink(destination: Text("\(location.name) detail")) {
+        NavigationLink(destination: WeatherDetail(weather: weather)) {
             ZStack(alignment: .bottomLeading) {
-                colours.randomElement()!.opacity(Double.random(in: 0 ..< 1))
-                    .frame(height: 146)
+                AsyncImage(url: imageURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 150)
+                        .clipped()
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(height: 146)
                 VStack(alignment: .leading) {
                     HStack(alignment: .top) {
-                        Text(location.name)
-                            .font(.largeTitle)
-                            .foregroundColor(Color("text"))
-                        
+                        Text(getName(for: weather.coord))
+                        .font(.largeTitle)
+                        .foregroundColor(Color("text"))
+
                         Spacer()
-                        
+
                         VStack(alignment: .trailing) {
                             HStack {
-                                if icon != nil {
-                                    icon!
-                                        .resizable()
-                                        .frame(width: Constants.width, height: Constants.height)
-                                }
-                                Text(formattedTemp(weather.main.temp))
+                                Image(systemName: iconName(for: weather.daily.first!.weather.first!.id))
+                                    .resizable()
+                                    .frame(width: Constants.width, height: Constants.height)
+                                Text("\(weather.daily.first!.temp.day)")
                                     .font(.largeTitle)
                             }
+
                             Spacer()
-                            
-                            Text("Min: \(formattedTemp(weather.main.tempMin))")
-                            Text("Max: \(formattedTemp(weather.main.tempMax))")
-                            
+
+                            Text("Min: \(weather.daily.first!.temp.min)")
+                            Text("Max: \(weather.daily.first!.temp.max)")
                         }
                     }
                 }
-                .padding()
-                .foregroundColor(Color("text"))
             }
+            .foregroundColor(Color("text"))
         }
         .task {
-            weather = await NetworkManager.loadCurrentWeather(for: location.text)
-            guard weather.weather.first != nil else {
-                print("Error: Weather response has not weather struct")
+            guard let photos = await NetworkManager.loadImage(name: getName(for: weather.coord)) else {
                 return
             }
-            let iconUIImage = await NetworkManager.loadIcon(name: weather.weather.first!.icon)
-            if iconUIImage != nil {
-                icon = Image(uiImage: iconUIImage!)
-            }
+            imageURL = photos.results.first!.urls.regular
         }
     }
 }
 
 private extension WeatherRow {
-    func formattedTemp(_ temp: Double) -> String {
-        let unit = Locale.current.usesMetricSystem ? "C" : "F"
-        return String(format: "%.0fº\(unit)", temp)
+    func getName(for location: Coordinates) -> String {
+        guard let item = weatherViewModel.locations.first(where: {
+            return $0.coord == location
+        } ) else {
+            return "N/A"
+        }
+        return item.name
     }
 }
 
-
 struct WeatherRow_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherRow(location: GeoResponse.example)
+        WeatherRow(weather: DailyWeatherResponse.example)
+            .environmentObject(WeatherViewModel())
             .previewLayout(.fixed(width: 560.0, height: 150.0))
             .background(.gray)
     }

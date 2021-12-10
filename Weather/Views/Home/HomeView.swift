@@ -34,7 +34,8 @@ struct HomeView: View {
                 await viewModel.searchAPI(for: searchText)
             }
         }
-        .onAppear {
+        .task {
+            await viewModel.loadDailyWeather()
             URLCache.shared.memoryCapacity = 1024 * 1024 * 256
         }
     }
@@ -46,8 +47,8 @@ private extension HomeView {
         ScrollView(showsIndicators: false) {
             Group {
                 if viewModel.hasLocations {
-                    ForEach(viewModel.locations) { location in
-                        WeatherRow(location: location)
+                    ForEach(viewModel.dailyWeather) { weather in
+                        WeatherRow(weather: weather)
                     }
                 } else {
                     Text("Add a location by tapping the search bar")
@@ -61,7 +62,7 @@ private extension HomeView {
 struct HomeView_Previews: PreviewProvider {
     static let viewModel: WeatherViewModel = {
         let model = WeatherViewModel()
-        model.locations = [GeoResponse.example, GeoResponse.example, GeoResponse.example]
+//        model.dailyWeather = [DailyWeatherResponse.example]
         return model
     }()
     
