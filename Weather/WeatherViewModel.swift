@@ -12,8 +12,10 @@ final class WeatherViewModel: ObservableObject {
     @Published var weatherModel = WeatherModel()
     
     var dailyWeather: [DailyWeatherResponse] {
-        weatherModel.weather
+        get { weatherModel.weather }
+        set { weatherModel.weather = newValue }
     }
+    
     var hasWeatherItems: Bool {
         !weatherModel.weather.isEmpty
     }
@@ -49,5 +51,10 @@ final class WeatherViewModel: ObservableObject {
     @MainActor
     func searchAPI(for searchTerm: String) async {
         await weatherModel.searchAPI(for: searchTerm)
+    }
+    
+    @MainActor
+    func loadImages() async {
+        await weatherModel.loadImages()
     }
 }

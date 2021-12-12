@@ -50,7 +50,7 @@ struct NetworkManager {
         return urlComponents.url
     }
     
-    static func loadDailyWeather(for location: Coordinates, name: String) async -> DailyWeatherResponse? {
+    static func loadDailyWeather(for location: Coordinates, place: GeoResponse) async -> DailyWeatherResponse? {
         let queries = [
             "lat": "\(location.lat)",
             "lon": "\(location.lon)",
@@ -76,7 +76,9 @@ struct NetworkManager {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .secondsSince1970
             var dailyWeather = try decoder.decode(DailyWeatherResponse.self, from: data)
-            dailyWeather.name = name
+            dailyWeather.place = place
+            let photo = await loadImage(name: place.name)
+            dailyWeather.unsplashedPhoto = photo?.results.randomElement()!
             return dailyWeather
         } catch {
             print("Error in \(#function). Failed to decode data from url.\n\(error)")

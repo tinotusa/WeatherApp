@@ -56,4 +56,11 @@ struct WeatherModel {
         self.weather.remove(at: index)
         save()
     }
+    
+    mutating func loadImages() async {
+        for (i, weather) in weather.enumerated() {
+            let photo = await NetworkManager.loadImage(name: weather.name)
+            self.weather[i].unsplashedPhoto = photo?.results.randomElement()
+        }
+    }
 }

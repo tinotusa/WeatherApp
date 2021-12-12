@@ -15,13 +15,11 @@ struct WeatherRow: View {
     
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     var weather: DailyWeatherResponse
-    let colours: [Color] = [.red, .green, .blue]
-    @State private var imageURL: URL? = nil
     
     var body: some View {
         NavigationLink(destination: WeatherDetail(weather: weather)) {
             ZStack(alignment: .bottomLeading) {
-                AsyncImage(url: imageURL) { image in
+                AsyncImage(url: weather.unsplashedPhoto?.urls.regular) { image in
                     image
                         .resizable()
                         .scaledToFill()
@@ -31,6 +29,7 @@ struct WeatherRow: View {
                     ProgressView()
                 }
                 .frame(height: 146)
+
                 VStack(alignment: .leading) {
                     HStack(alignment: .top) {
                         Text(weather.name)
@@ -57,12 +56,6 @@ struct WeatherRow: View {
                 }
             }
             .foregroundColor(Color("text"))
-        }
-        .task {
-            guard let photos = await NetworkManager.loadImage(name: weather.name) else {
-                return
-            }
-            imageURL = photos.results.first!.urls.regular
         }
     }
 }

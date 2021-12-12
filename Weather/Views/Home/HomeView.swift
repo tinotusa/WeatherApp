@@ -36,6 +36,8 @@ struct HomeView: View {
         }
         .task {
             URLCache.shared.memoryCapacity = 1024 * 1024 * 256
+            print("here")
+            await viewModel.loadImages()
         }
     }
 }
@@ -48,6 +50,7 @@ private extension HomeView {
                 if viewModel.hasWeatherItems {
                     ForEach(viewModel.dailyWeather) { weather in
                         WeatherRow(weather: weather)
+                            .id(UUID())
                     }
                 } else {
                     Text("Add a location by tapping the search bar")

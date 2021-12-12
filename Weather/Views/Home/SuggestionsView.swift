@@ -20,7 +20,7 @@ struct SuggestionsView: View {
                     ForEach(weatherViewModel.suggestions) { suggestion in
                         Button {
                             Task {
-                                guard let weather = await NetworkManager.loadDailyWeather(for: suggestion.coord, name: suggestion.name) else {
+                                guard let weather = await NetworkManager.loadDailyWeather(for: suggestion.coord, place: suggestion) else {
                                     return
                                 }
                                 await weatherViewModel.addLocation(weather)

@@ -68,22 +68,41 @@ struct WeatherItem: Codable, Identifiable {
 
 struct DailyWeatherResponse: Codable, Identifiable, Equatable {
     let id = UUID()
-    private var _name: String?
+    var place: GeoResponse?
+    
+    // this is not in CodingKeys because i want to load a new image
+    // each time the app is launched
+    var _unsplashedPhoto: UnsplashedPhoto?
+    
     let lat: Double
     let lon: Double
     let daily: [WeatherItem]
     
     enum CodingKeys: CodingKey {
-        case lat, lon, daily, _name
+        case lat, lon, daily, place
     }
     
     var coord: Coordinates {
         Coordinates(lon: lon, lat: lat)
     }
     
+    var unsplashedPhoto: UnsplashedPhoto? {
+        get { _unsplashedPhoto }
+        set { _unsplashedPhoto = newValue }
+    }
+    
+    var fullName: String {
+        if let place = place {
+            return place.text
+        } 
+        return "N/A"
+    }
+    
     var name: String {
-        get { _name ?? "N/A" }
-        set { _name = newValue }
+        if let place = place {
+            return place.name
+        }
+        return "N/A"
     }
     
     static func ==(_ lhs: DailyWeatherResponse, _ rhs: DailyWeatherResponse) -> Bool {

@@ -13,32 +13,24 @@ struct WeatherDetail: View {
     @EnvironmentObject var viewModel: WeatherViewModel
     @Environment(\.dismiss) var dismiss
     
-    @State private var backgroundColor: Color? = nil
     @State private var showingDeleteDialog = false
-    @State private var imageURL: URL? = nil
     
     var body: some View {
         ZStack(alignment: .top) {
             background
             
             ScrollView(showsIndicators: false) {
-                DetailHeader(imageURL: imageURL, weather: weather)
+                DetailHeader(imageURL: weather.unsplashedPhoto?.urls.regular, weather: weather)
                 
                 HeaderRow(weather: weather)
                     .padding(.horizontal)
-
-                Divider()
                 
                 WeekTemperatureView(weather: weather)
                     .padding(.horizontal)
 
                 Spacer()
             }
-            
             .navigationBarHidden(true)
-            .task {
-                await loadPhotos()
-            }
             .toolbar {
                 deleteButton
             }
@@ -51,7 +43,6 @@ struct WeatherDetail: View {
                     dismiss()
                 }
             }
-            
             navButtons
                 .padding(.horizontal)
         }
@@ -59,14 +50,6 @@ struct WeatherDetail: View {
 }
 
 private extension WeatherDetail {
-    func loadPhotos() async {
-        guard let photos = await NetworkManager.loadImage(name: weather.name) else {
-            return
-        }
-        imageURL = photos.results.first!.urls.regular
-        backgroundColor = Color(hex: photos.results.first!.color)
-    }
-    
     @ViewBuilder
     var navButtons: some View {
         HStack {
@@ -78,9 +61,9 @@ private extension WeatherDetail {
     
     @ViewBuilder
     var background: some View {
-        if backgroundColor != nil {
-            backgroundColor!
-                .ignoresSafeArea()
+        if weather.unsplashedPhoto?.color != nil {
+            Color(hex: weather.unsplashedPhoto!.color)
+                    .ignoresSafeArea()
         }
     }
     
