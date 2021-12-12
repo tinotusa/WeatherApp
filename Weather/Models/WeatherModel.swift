@@ -76,4 +76,11 @@ struct WeatherModel {
         locations.remove(at: index)
         save()
     }
+    
+    func getName(for location: Coordinates) -> String {
+        guard let item = locations.first(where: { $0.coord == location }) else {
+            return "N/A"
+        }
+        return item.name
+    }
 }

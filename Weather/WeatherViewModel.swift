@@ -71,4 +71,8 @@ final class WeatherViewModel: ObservableObject {
     func searchAPI(for searchTerm: String) async {
         await weatherModel.searchAPI(for: searchTerm)
     }
+    
+    func getName(for location: Coordinates) -> String {
+        weatherModel.getName(for: location)
+    }
 }

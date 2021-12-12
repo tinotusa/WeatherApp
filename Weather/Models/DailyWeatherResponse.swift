@@ -53,6 +53,10 @@ struct WeatherItem: Codable, Identifiable {
     let rain: Double?
     let pop: Double
     
+    var currentTemp: String {
+        "test"
+    }
+    
     enum CodingKeys: String, CodingKey {
         case date = "dt"
         case windSpeed = "wind_speed"
