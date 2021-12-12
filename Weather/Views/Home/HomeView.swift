@@ -36,8 +36,7 @@ struct HomeView: View {
         }
         .task {
             URLCache.shared.memoryCapacity = 1024 * 1024 * 256
-            print("here")
-            await viewModel.loadImages()
+            await viewModel.loadWeather()
         }
     }
 }
@@ -64,7 +63,7 @@ private extension HomeView {
 struct HomeView_Previews: PreviewProvider {
     static let viewModel: WeatherViewModel = {
         let model = WeatherViewModel()
-//        model.dailyWeather = [DailyWeatherResponse.example]
+        model.dailyWeather = [DailyWeatherResponse.example]
         return model
     }()
     

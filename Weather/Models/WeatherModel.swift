@@ -57,10 +57,12 @@ struct WeatherModel {
         save()
     }
     
-    mutating func loadImages() async {
+    mutating func loadWeather() async {
         for (i, weather) in weather.enumerated() {
-            let photo = await NetworkManager.loadImage(name: weather.name)
-            self.weather[i].unsplashedPhoto = photo?.results.randomElement()
+            guard let temp = await NetworkManager.loadDailyWeather(for: weather.coord, place: weather.place!) else {
+                continue
+            }
+            self.weather[i] = temp
         }
     }
 }

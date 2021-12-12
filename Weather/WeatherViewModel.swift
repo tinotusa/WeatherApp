@@ -52,9 +52,9 @@ final class WeatherViewModel: ObservableObject {
     func searchAPI(for searchTerm: String) async {
         await weatherModel.searchAPI(for: searchTerm)
     }
-    
+
     @MainActor
-    func loadImages() async {
-        await weatherModel.loadImages()
+    func loadWeather() async {
+        await weatherModel.loadWeather()
     }
 }
