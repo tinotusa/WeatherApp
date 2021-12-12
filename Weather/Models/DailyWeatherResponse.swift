@@ -35,7 +35,7 @@ struct WeatherDescription: Codable, Identifiable {
     let id: Int
     let main: String
     let description: String
-    public let icon: String
+    let icon: String
 }
 
 struct WeatherItem: Codable, Identifiable {
@@ -46,22 +46,19 @@ struct WeatherItem: Codable, Identifiable {
     let temp: Temperature
     let pressure: Double
     let humidity: Double
-    let weather: [WeatherDescription]
+    let description: [WeatherDescription]
     let windSpeed: Double
     let windDeg: Int
     let clouds: Int
     let rain: Double?
     let pop: Double
     
-    var currentTemp: String {
-        "test"
-    }
-    
     enum CodingKeys: String, CodingKey {
         case date = "dt"
         case windSpeed = "wind_speed"
         case windDeg = "wind_deg"
-        case sunrise, sunset, temp, pressure, humidity, weather, clouds, rain, pop
+        case description = "weather"
+        case sunrise, sunset, temp, pressure, humidity, clouds, rain, pop
     }
     
 }
@@ -155,4 +152,33 @@ struct DailyWeatherResponse: Codable, Identifiable, Equatable {
         let data = text.data(using: .utf8)!
         return try! JSONDecoder().decode(DailyWeatherResponse.self, from: data)
     }
+}
+
+// MARK: - Functions for the current day
+extension DailyWeatherResponse {
+    private var current: WeatherItem {
+        daily.first!
+    }
+    
+    var iconID: Int {
+        current.description.first!.id
+    }
+    
+    private func formatTemp(_ temp: Double) -> String {
+        let symbol = Locale.current.usesMetricSystem ? "C" : "F"
+        return String(format: "%.0fº\(symbol)", temp)
+    }
+    
+    var temp: String {
+        formatTemp(current.temp.day)
+    }
+    
+    var minTemp: String {
+        formatTemp(current.temp.min)
+    }
+    
+    var maxTemp: String {
+        formatTemp(current.temp.max)
+    }
+    
 }

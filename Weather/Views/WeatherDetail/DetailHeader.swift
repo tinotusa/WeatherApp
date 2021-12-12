@@ -28,7 +28,7 @@ struct DetailHeader: View {
                 Text("\(weather.daily.first!.temp.day)")
                     .font(.largeTitle)
                     .bold()
-                Text("\(weather.daily.first!.weather.first!.description)")
+                Text("\(weather.daily.first!.description.first!.description)")
             }
         }
     }

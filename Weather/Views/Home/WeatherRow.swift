@@ -11,6 +11,7 @@ struct WeatherRow: View {
     struct Constants {
         static let width = 50.0
         static let height = 50.0
+        static let imageHeight = 150.0
     }
     
     @EnvironmentObject var weatherViewModel: WeatherViewModel
@@ -19,44 +20,47 @@ struct WeatherRow: View {
     var body: some View {
         NavigationLink(destination: WeatherDetail(weather: weather)) {
             ZStack(alignment: .bottomLeading) {
-                AsyncImage(url: weather.unsplashedPhoto?.urls.regular) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(height: 150)
-                        .clipped()
-                } placeholder: {
-                    ProgressView()
-                }
-                .frame(height: 146)
+                headerImage
 
-                VStack(alignment: .leading) {
-                    HStack(alignment: .top) {
-                        Text(weather.name)
+                HStack(alignment: .bottom) {
+                    Text(weather.name)
                         .font(.largeTitle)
-                        .foregroundColor(Color("text"))
-
-                        Spacer()
-
-                        VStack(alignment: .trailing) {
-                            HStack {
-                                Image(systemName: iconName(for: weather.daily.first!.weather.first!.id))
-                                    .resizable()
-                                    .frame(width: Constants.width, height: Constants.height)
-                                Text("\(weather.daily.first!.temp.day)")
-                                    .font(.largeTitle)
-                            }
-
-                            Spacer()
-
-                            Text("Min: \(weather.daily.first!.temp.min)")
-                            Text("Max: \(weather.daily.first!.temp.max)")
-                        }
-                    }
+                        .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
+                    
+                    Spacer()
+                    
+                    temperatures
                 }
             }
             .foregroundColor(Color("text"))
         }
+    }
+}
+
+private extension WeatherRow {
+    var temperatures: some View {
+        VStack(alignment: .trailing, spacing: 0) {
+            Image(systemName: iconName(for: weather.iconID))
+                .symbolRenderingMode(.multicolor)
+                .resizable()
+                .frame(width: Constants.width, height: Constants.height)
+            Text("\(weather.temp)")
+                .font(.largeTitle)
+        }
+        .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
+    }
+    
+    var headerImage: some View {
+        AsyncImage(url: weather.unsplashedPhoto?.urls.regular) { image in
+            image
+                .resizable()
+                .scaledToFill()
+                .frame(height: Constants.imageHeight)
+                .clipped()
+        } placeholder: {
+            ProgressView()
+        }
+        .frame(height: Constants.imageHeight)
     }
 }
 

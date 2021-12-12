@@ -16,7 +16,7 @@ struct WeekTemperatureView: View {
                 ForEach(weather.daily) { day in
                     VStack {
                         Text("\(Weekday.weekday(from: day.date).shortName)")
-                        Image(systemName: iconName(for: day.weather.first!.id))
+                        Image(systemName: iconName(for: day.description.first!.id))
                         Text("\(day.temp.day)ºC")
                     }
                     Spacer()
