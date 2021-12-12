@@ -35,7 +35,6 @@ struct HomeView: View {
             }
         }
         .task {
-            await viewModel.loadDailyWeather()
             URLCache.shared.memoryCapacity = 1024 * 1024 * 256
         }
     }
@@ -46,7 +45,7 @@ private extension HomeView {
     var homeView: some View {
         ScrollView(showsIndicators: false) {
             Group {
-                if viewModel.hasLocations {
+                if viewModel.hasWeatherItems {
                     ForEach(viewModel.dailyWeather) { weather in
                         WeatherRow(weather: weather)
                     }

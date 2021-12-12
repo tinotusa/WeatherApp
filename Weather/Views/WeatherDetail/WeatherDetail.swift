@@ -47,7 +47,7 @@ struct WeatherDetail: View {
                 isPresented: $showingDeleteDialog
             ) {
                 Button("Delete", role: .destructive) {
-    //                viewModel.removeWeather(weather)
+                    viewModel.removeWeather(weather)
                     dismiss()
                 }
             }
@@ -60,7 +60,7 @@ struct WeatherDetail: View {
 
 private extension WeatherDetail {
     func loadPhotos() async {
-        guard let photos = await NetworkManager.loadImage(name: viewModel.getName(for: weather.coord)) else {
+        guard let photos = await NetworkManager.loadImage(name: weather.name) else {
             return
         }
         imageURL = photos.results.first!.urls.regular

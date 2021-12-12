@@ -11,29 +11,18 @@ import SwiftUI
 final class WeatherViewModel: ObservableObject {
     @Published var weatherModel = WeatherModel()
     
-    var locations: [GeoResponse] {
-        get { weatherModel.locations }
-        set { weatherModel.locations = newValue }
-    }
-    
-    var currentWeather: [WeatherResponse] {
-        weatherModel.currentWeather
-    }
-    
     var dailyWeather: [DailyWeatherResponse] {
-        weatherModel.dailyWeather
+        weatherModel.weather
     }
-    
-    var hasLocations: Bool {
-        !weatherModel.locations.isEmpty
+    var hasWeatherItems: Bool {
+        !weatherModel.weather.isEmpty
     }
-    
     var suggestions: [GeoResponse] {
         weatherModel.suggestions
     }
     
     var isLoading: Bool {
-        weatherModel.isLoading == true
+        weatherModel.isLoading
     }
     
     init() {
@@ -49,30 +38,16 @@ final class WeatherViewModel: ObservableObject {
     }
     
     @MainActor
-    func addLocation(_ location: GeoResponse) async {
-        weatherModel.addLocation(location)
-//        await weatherModel.loadCurrentWeather()
-        await weatherModel.loadDailyWeather()
+    func addLocation(_ weather: DailyWeatherResponse) async {
+        weatherModel.addLocation(weather)
     }
     
-    func removeWeather(_ weather: WeatherResponse) {
+    func removeWeather(_ weather: DailyWeatherResponse) {
         weatherModel.removeWeather(weather)
-    }
-    func removeWeather(named location: String) {
-        weatherModel.removeWeather(named: location)
-    }
-    
-    @MainActor
-    func loadDailyWeather() async {
-        await weatherModel.loadDailyWeather()
     }
     
     @MainActor
     func searchAPI(for searchTerm: String) async {
         await weatherModel.searchAPI(for: searchTerm)
-    }
-    
-    func getName(for location: Coordinates) -> String {
-        weatherModel.getName(for: location)
     }
 }

@@ -23,7 +23,7 @@ struct DetailHeader: View {
                 ProgressView()
             }
             VStack {
-                Text(viewModel.getName(for: weather.coord))
+                Text(weather.name)
                     .font(.title2)
                 Text("\(weather.daily.first!.temp.day)")
                     .font(.largeTitle)

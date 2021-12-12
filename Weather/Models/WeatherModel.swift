@@ -8,17 +8,15 @@
 import Foundation
 
 struct WeatherModel {
-    var locations = [GeoResponse]()
     var suggestions = [GeoResponse]()
-    var currentWeather = [WeatherResponse]()
-    var dailyWeather = [DailyWeatherResponse]()
+    var weather = [DailyWeatherResponse]()
     var isLoading = false
     
-    mutating func addLocation(_ location: GeoResponse) {
-        if locations.contains(location) {
+    mutating func addLocation(_ location: DailyWeatherResponse) {
+        if weather.contains(location) {
            return
         }
-        locations.append(location)
+        weather.append(location)
         save()
     }
     
@@ -33,9 +31,9 @@ struct WeatherModel {
         let saveURL = documents.appendingPathComponent(Self.saveFilename)
         do {
             let data = try Data(contentsOf: saveURL)
-            locations = try JSONDecoder().decode([GeoResponse].self, from: data)
+            weather = try JSONDecoder().decode([DailyWeatherResponse].self, from: data)
         } catch {
-            print("Error: \(#function) Failed to load locations.\n\(locations)")
+            print("Error: \(#function) Failed to load locations.\n\(weather)")
         }
     }
     
@@ -44,43 +42,18 @@ struct WeatherModel {
         let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let saveURL = documents.appendingPathComponent(Self.saveFilename)
         do {
-            let data = try JSONEncoder().encode(locations)
+            let data = try JSONEncoder().encode(weather)
             try data.write(to: saveURL, options: [.atomic, .completeFileProtection])
         } catch {
             print("Error: \(#function) failed to save locations.\n\(error)")
         }
     }
     
-    mutating func loadDailyWeather() async {
-        dailyWeather = []
-        for location in locations {
-            guard let weather = await NetworkManager.loadDailyWeather(for: location.coord) else {
-                continue
-            }
-            dailyWeather.append(weather)
-        }
-    }
-    
-    mutating func removeWeather(named location: String) {
-        guard let index = locations.firstIndex(where: { $0.name == location }) else {
+    mutating func removeWeather(_ weather: DailyWeatherResponse) {
+        guard let index = self.weather.firstIndex(where: { $0 == weather }) else {
             return
         }
-        locations.remove(at: index)
+        self.weather.remove(at: index)
         save()
-    }
-    
-    mutating func removeWeather(_ weather: WeatherResponse) {
-        guard let index = locations.firstIndex(where: { $0.name == weather.name }) else {
-            return
-        }
-        locations.remove(at: index)
-        save()
-    }
-    
-    func getName(for location: Coordinates) -> String {
-        guard let item = locations.first(where: { $0.coord == location }) else {
-            return "N/A"
-        }
-        return item.name
     }
 }

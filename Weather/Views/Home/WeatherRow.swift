@@ -33,7 +33,7 @@ struct WeatherRow: View {
                 .frame(height: 146)
                 VStack(alignment: .leading) {
                     HStack(alignment: .top) {
-                        Text(getName(for: weather.coord))
+                        Text(weather.name)
                         .font(.largeTitle)
                         .foregroundColor(Color("text"))
 
@@ -59,22 +59,11 @@ struct WeatherRow: View {
             .foregroundColor(Color("text"))
         }
         .task {
-            guard let photos = await NetworkManager.loadImage(name: getName(for: weather.coord)) else {
+            guard let photos = await NetworkManager.loadImage(name: weather.name) else {
                 return
             }
             imageURL = photos.results.first!.urls.regular
         }
-    }
-}
-
-private extension WeatherRow {
-    func getName(for location: Coordinates) -> String {
-        guard let item = weatherViewModel.locations.first(where: {
-            return $0.coord == location
-        } ) else {
-            return "N/A"
-        }
-        return item.name
     }
 }
 

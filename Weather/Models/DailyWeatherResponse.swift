@@ -66,18 +66,28 @@ struct WeatherItem: Codable, Identifiable {
     
 }
 
-struct DailyWeatherResponse: Codable, Identifiable {
+struct DailyWeatherResponse: Codable, Identifiable, Equatable {
     let id = UUID()
+    private var _name: String?
     let lat: Double
     let lon: Double
     let daily: [WeatherItem]
     
     enum CodingKeys: CodingKey {
-        case daily, lat, lon
+        case lat, lon, daily, _name
     }
     
     var coord: Coordinates {
         Coordinates(lon: lon, lat: lat)
+    }
+    
+    var name: String {
+        get { _name ?? "N/A" }
+        set { _name = newValue }
+    }
+    
+    static func ==(_ lhs: DailyWeatherResponse, _ rhs: DailyWeatherResponse) -> Bool {
+        lhs.id == rhs.id
     }
     
     static var example: DailyWeatherResponse {
