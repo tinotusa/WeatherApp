@@ -12,29 +12,37 @@ struct SuggestionsView: View {
     @Environment(\.dismissSearch) var dismissSearch
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading) {
-                if weatherViewModel.isLoading {
-                    ProgressView()
-                } else {
-                    ForEach(weatherViewModel.suggestions) { suggestion in
-                        Button {
-                            Task {
-                                guard let weather = await NetworkManager.loadDailyWeather(for: suggestion.coord, place: suggestion) else {
-                                    return
-                                }
-                                await weatherViewModel.addLocation(weather)
-                            }
-                            dismissSearch()
-                        } label: {
-                            Text(suggestion.text)
-                        }
-                    }
-                }
+        VStack {
+            if weatherViewModel.isLoading {
+                Spacer()
+                ProgressView()
+                Spacer()
+            } else {
+                suggestionsList
             }
-            .frame(maxWidth: .infinity)
         }
-        .background(.thinMaterial)
+    }
+}
+
+private extension SuggestionsView {
+    @ViewBuilder
+    var suggestionsList: some View {
+        List {
+            ForEach(weatherViewModel.suggestions) { suggestion in
+                Button {
+                    Task {
+                        guard let weather = await NetworkManager.loadDailyWeather(for: suggestion.coord, place: suggestion) else {
+                            return
+                        }
+                        await weatherViewModel.addLocation(weather)
+                    }
+                    dismissSearch()
+                } label: {
+                    Text(suggestion.text)
+                }
+                Text(suggestion.text)
+            }
+        }
     }
 }
 

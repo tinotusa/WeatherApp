@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct HomeView: View {
     @EnvironmentObject var viewModel: WeatherViewModel
     @State private var searchText = ""
