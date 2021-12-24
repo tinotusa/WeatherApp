@@ -12,14 +12,14 @@ struct SuggestionsView: View {
     @Environment(\.dismissSearch) var dismissSearch
     
     var body: some View {
-        VStack {
-            if weatherViewModel.isLoading {
+        if weatherViewModel.isLoading {
+            VStack {
                 Spacer()
                 ProgressView()
                 Spacer()
-            } else {
-                suggestionsList
             }
+        } else {
+            suggestionsList
         }
     }
 }
@@ -27,20 +27,28 @@ struct SuggestionsView: View {
 private extension SuggestionsView {
     @ViewBuilder
     var suggestionsList: some View {
-        List {
-            ForEach(weatherViewModel.suggestions) { suggestion in
-                Button {
-                    Task {
-                        guard let weather = await NetworkManager.loadDailyWeather(for: suggestion.coord, place: suggestion) else {
-                            return
+        if weatherViewModel.suggestions.isEmpty {
+            VStack {
+                Text("No results found")
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(.thinMaterial)
+        } else {
+            List {
+                ForEach(weatherViewModel.suggestions) { suggestion in
+                    Button {
+                        Task {
+                            guard let weather = await NetworkManager.loadDailyWeather(for: suggestion.coord, place: suggestion) else {
+                                return
+                            }
+                            await weatherViewModel.addLocation(weather)
                         }
-                        await weatherViewModel.addLocation(weather)
+                        dismissSearch()
+                    } label: {
+                        Text(suggestion.text)
                     }
-                    dismissSearch()
-                } label: {
                     Text(suggestion.text)
                 }
-                Text(suggestion.text)
             }
         }
     }

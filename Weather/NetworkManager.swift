@@ -76,7 +76,7 @@ struct NetworkManager {
             decoder.dateDecodingStrategy = .secondsSince1970
             var dailyWeather = try decoder.decode(DailyWeatherResponse.self, from: data)
             dailyWeather.place = place
-            let photo = await loadImage(name: place.name)
+            let photo = await loadImage(name: place.text)
             dailyWeather.unsplashedPhoto = photo?.results.randomElement()!
             return dailyWeather
         } catch {
