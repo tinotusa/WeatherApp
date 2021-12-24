@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 struct NetworkManager {
     // MARK: - Openweathermap
@@ -113,27 +112,4 @@ struct NetworkManager {
         }
         return photos
     }
-}
-
-// TODO: move me
-struct UnsplashedPhotoURLS: Codable {
-    let raw: URL
-    let full: URL
-    let regular: URL
-    let small: URL
-    let thumb: URL
-}
-
-struct UnsplashedPhoto: Codable, Identifiable {
-    let id: String
-    let width: Int
-    let height: Int
-    let color: String
-    // TODO: get user links for credit
-    let urls: UnsplashedPhotoURLS
-}
-
-struct UnsplashedSearchResponse: Codable {
-    let total: Int
-    let results: [UnsplashedPhoto]
 }

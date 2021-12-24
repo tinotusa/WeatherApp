@@ -16,18 +16,24 @@ struct HourlyRow: View {
     }
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ForEach(weather.nextTwelveHours) { hour in
-                    VStack {
-                        Text("\(hour.formattedTime)")
-                        Image(systemName: iconName(for: hour.iconID))
-                            .resizable()
-                            .renderingMode(.original)
-                            .frame(width: Constants.width, height: Constants.height)
-                        Text(formatTemp(hour.temp))
+        VStack(alignment: .leading) {
+            Text("Hourly")
+                .bold()
+                .font(.title)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(weather.nextTwelveHours) { hour in
+                        VStack {
+                            Text("\(hour.formattedTime)")
+                            Image(systemName: iconName(for: hour.iconID))
+                                .resizable()
+                                .renderingMode(.original)
+                                .frame(width: Constants.width, height: Constants.height)
+                            Text(formatTemp(hour.temp))
+                        }
+                        .padding(.trailing)
                     }
-                    .padding(.trailing)
                 }
             }
         }

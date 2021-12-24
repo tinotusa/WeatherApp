@@ -33,7 +33,6 @@ struct SuggestionsView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .border(.red)
         }
         .background(.thinMaterial)
     }

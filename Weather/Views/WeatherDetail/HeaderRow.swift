@@ -13,26 +13,40 @@ struct HeaderRow: View {
     let iconHeight = 60.0
     
     var body: some View {
-        HStack {
-            icon(label: "Wind", systemName: "wind", text: weather.windDeg)
-            Spacer()
-            icon(label: "Rain", systemName: "cloud.rain", text: weather.rain)
-            Spacer()
-            icon(label: "Humidity", systemName: "humidity", text: weather.humidity)
+        VStack(alignment: .leading) {
+            Text("Additional Info")
+                .font(.title)
+            HStack {
+                label(name: "Wind", value: weather.current.windSpeed, unit: windUnit)
+                label(name: "Humidity", value: weather.current.humidity, unit: "%")
+            }
+            HStack {
+                if let rain = weather.current.rain {
+                    label(name: "Rain", value: rain, unit: "%")
+                }
+            }
         }
-        .roundedThinMaterial()
     }
 }
 
 private extension HeaderRow {
+    var windUnit: String {
+        if Locale.current.usesMetricSystem {
+            return "m/s"
+        }
+        return "m/h"
+    }
+    
     @ViewBuilder
-    func icon(label: String, systemName: String, text: String) -> some View {
-        VStack {
-            Image(systemName: systemName)
-                .resizable()
-                .frame(width: iconWidth, height: iconHeight)
-            Text(text)
-            Text(label)
+    func label(name: String, value: Double, unit: String?) -> some View {
+        HStack {
+            Text(name)
+                .bold()
+            Text(String(format: "%g", value))
+                .foregroundColor(Color("darkGray"))
+                .bold()
+            Text(unit ?? "")
+                .foregroundColor(.secondary)
         }
     }
 }

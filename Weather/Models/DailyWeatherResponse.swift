@@ -7,12 +7,11 @@
 
 import Foundation
 
-//struct Coordinates: Codable, Equatable {
-//    let lon: Double
-//    let lat: Double
-//}
+struct Coordinates: Codable, Equatable {
+    let lon: Double
+    let lat: Double
+}
 
-// TODO: Move to own file
 struct City: Codable, Identifiable {
     let id: Int
     let name: String
@@ -236,7 +235,7 @@ struct DailyWeatherResponse: Codable, Identifiable, Equatable {
 
 // MARK: - Functions for the current day
 extension DailyWeatherResponse {
-    private var current: WeatherItem {
+    var current: WeatherItem {
         daily.first!
     }
     

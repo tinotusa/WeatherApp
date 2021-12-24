@@ -16,77 +16,58 @@ struct WeatherDetail: View {
     @State private var showingDeleteDialog = false
     
     var body: some View {
-        ZStack(alignment: .top) {
-            background
+        ZStack(alignment: .bottom) {
+            Color("background")
+                .ignoresSafeArea()
             ScrollView(showsIndicators: false) {
-                GeometryReader { proxy in
-                    DetailHeader(weather: weather, proxy: proxy)
-//                    Text("proxy: \(proxy.frame(in: .global).minY)")
-                }
-                .frame(height: 300)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                
-                HourlyRow(weather: weather)
-                    .padding(.horizontal)
-                
-                HeaderRow(weather: weather)
-                    .padding(.horizontal)
-                
-                WeekTemperatureView(weather: weather)
-                    .padding(.horizontal)
+                VStack(alignment: .leading) {
+                    HStack {
+                        Spacer()
+                        DetailHeader(weather: weather)
+                        Spacer()
+                    }
+                    
+                    HourlyRow(weather: weather)
+                        .padding(.bottom)
 
-                Spacer()
-            }
-            .navigationBarHidden(true)
-            .toolbar {
-                deleteButton
-            }
-            .confirmationDialog(
-                Text("Permanently erase the items in the trash?"),
-                isPresented: $showingDeleteDialog
-            ) {
-                Button("Delete", role: .destructive) {
-                    viewModel.removeWeather(weather)
-                    dismiss()
+                    WeekTemperatureView(weather: weather)
+                        .padding(.bottom)
+                    
+                    HeaderRow(weather: weather)
                 }
-            }
-            navButtons
                 .padding(.horizontal)
+            }
+            footer
+        }
+        .navigationTitle(weather.place?.name ?? "")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            deleteButton
+        }
+        .confirmationDialog(
+            Text("Permanently erase the items in the trash?"),
+            isPresented: $showingDeleteDialog
+        ) {
+            Button("Delete", role: .destructive) {
+                viewModel.removeWeather(weather)
+                dismiss()
+            }
         }
     }
 }
 
 private extension WeatherDetail {
     @ViewBuilder
-    var navButtons: some View {
+    var footer: some View {
         HStack {
-            backButton
             Spacer()
-            deleteButton
+            Link(destination: URL(string: "https://openweathermap.org")!) {
+                Text("OpenWeatherMaps.org")
+            }
+            Spacer()
         }
+        .background(Color("background"))
     }
-    
-    @ViewBuilder
-    var background: some View {
-        if weather.unsplashedPhoto?.color != nil {
-            LinearGradient(
-                colors: [
-                    Color(hex: weather.unsplashedPhoto!.color),
-                    Color(hex: weather.unsplashedPhoto!.color).opacity(0.3)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-        }
-    }
-    
-    var backButton: some View {
-        Button("Back") {
-            dismiss()
-        }
-    }
-    
     var deleteButton: some View {
         Button {
             showingDeleteDialog = true

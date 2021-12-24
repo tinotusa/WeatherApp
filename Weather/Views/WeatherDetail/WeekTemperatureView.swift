@@ -11,21 +11,26 @@ struct WeekTemperatureView: View {
     let weather: DailyWeatherResponse
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ForEach(weather.daily) { day in
-                    VStack {
-                        Text("\(Weekday.weekday(from: day.date).shortName)")
-                        Image(systemName: iconName(for: day.iconID))
-                            .renderingMode(.original)
-                        Text(day.dayTemp)
+        VStack(alignment: .leading) {
+            Text("Weekly")
+                .bold()
+                .font(.title)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(weather.daily) { day in
+                        VStack {
+                            Text("\(Weekday.weekday(from: day.date).shortName)")
+                            Image(systemName: iconName(for: day.iconID))
+                                .renderingMode(.original)
+                            Text(day.dayTemp)
+                        }
+                        .padding(.trailing)
+                        .font(.title2)
                     }
-                    .padding(.trailing)
-                    .font(.title2)
                 }
             }
         }
-        .roundedThinMaterial()
     }
 }
 
