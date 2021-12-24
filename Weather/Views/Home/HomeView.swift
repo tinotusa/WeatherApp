@@ -13,17 +13,14 @@ struct HomeView: View {
     @State private var searchText = ""
     
     var body: some View {
-        
         NavigationView {
-            VStack {
-                homeView
-                    .overlay {
-                        if !searchText.isEmpty {
-                            SuggestionsView()
-                        }
+            homeView
+                .overlay {
+                    if !searchText.isEmpty {
+                        SuggestionsView()
                     }
-            }
-            .navigationTitle("Weather")
+                }
+                .navigationTitle("Weather")
         }
         .searchable(
             text: $searchText,
@@ -45,18 +42,22 @@ struct HomeView: View {
 private extension HomeView {
     @ViewBuilder
     var homeView: some View {
-        ScrollView(showsIndicators: false) {
-            Group {
-                if viewModel.hasWeatherItems {
-                    ForEach(viewModel.dailyWeather) { weather in
-                        WeatherRow(weather: weather)
-                            .id(UUID())
+        VStack {
+            if !viewModel.hasWeatherItems {
+                Spacer()
+                Text("Add a location by tapping the search bar")
+                Spacer()
+            } else {
+                ScrollView(showsIndicators: false) {
+                    Group {
+                        ForEach(viewModel.dailyWeather) { weather in
+                            WeatherRow(weather: weather)
+                                .id(UUID())
+                        }
                     }
-                } else {
-                    Text("Add a location by tapping the search bar")
+                    .frame(maxWidth: .infinity)
                 }
             }
-            .frame(maxWidth: .infinity)
         }
     }
 }
