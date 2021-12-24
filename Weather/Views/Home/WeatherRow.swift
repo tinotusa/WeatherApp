@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WeatherRow: View {
-    struct Constants {
+    private struct Constants {
         static let width = 50.0
         static let height = 50.0
         static let imageHeight = 150.0
@@ -41,7 +41,7 @@ private extension WeatherRow {
     var temperatures: some View {
         VStack(alignment: .trailing, spacing: 0) {
             Image(systemName: iconName(for: weather.iconID))
-                .symbolRenderingMode(.multicolor)
+                .renderingMode(.original)
                 .resizable()
                 .frame(width: Constants.width, height: Constants.height)
             Text("\(weather.temp)")

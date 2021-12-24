@@ -13,6 +13,7 @@ struct HomeView: View {
     @State private var searchText = ""
     
     var body: some View {
+        
         NavigationView {
             VStack {
                 homeView
@@ -68,14 +69,8 @@ struct HomeView_Previews: PreviewProvider {
     }()
     
     static var previews: some View {
-        Group {
-            HomeView()
-                .previewDisplayName("With locations")
-                .environmentObject(viewModel)
-            HomeView()
-                .previewDisplayName("With empty locations")
-                .environmentObject(WeatherViewModel())
-        }
-        
+        HomeView()
+            .previewDisplayName("With empty locations")
+            .environmentObject(WeatherViewModel())
     }
 }

@@ -18,9 +18,16 @@ struct WeatherDetail: View {
     var body: some View {
         ZStack(alignment: .top) {
             background
-            
             ScrollView(showsIndicators: false) {
-                DetailHeader(imageURL: weather.unsplashedPhoto?.urls.regular, weather: weather)
+                GeometryReader { proxy in
+                    DetailHeader(weather: weather, proxy: proxy)
+//                    Text("proxy: \(proxy.frame(in: .global).minY)")
+                }
+                .frame(height: 300)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                HourlyRow(weather: weather)
+                    .padding(.horizontal)
                 
                 HeaderRow(weather: weather)
                     .padding(.horizontal)
@@ -62,8 +69,15 @@ private extension WeatherDetail {
     @ViewBuilder
     var background: some View {
         if weather.unsplashedPhoto?.color != nil {
-            Color(hex: weather.unsplashedPhoto!.color)
-                    .ignoresSafeArea()
+            LinearGradient(
+                colors: [
+                    Color(hex: weather.unsplashedPhoto!.color),
+                    Color(hex: weather.unsplashedPhoto!.color).opacity(0.3)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
         }
     }
     

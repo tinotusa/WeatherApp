@@ -14,11 +14,11 @@ struct HeaderRow: View {
     
     var body: some View {
         HStack {
-            icon(label: "Wind", systemName: "wind", text: "\(weather.daily.first!.windDeg)m/s")
+            icon(label: "Wind", systemName: "wind", text: weather.windDeg)
             Spacer()
-            icon(label: "Rain", systemName: "cloud.rain", text: "\(weather.daily.first!.rain ?? 0)%")
+            icon(label: "Rain", systemName: "cloud.rain", text: weather.rain)
             Spacer()
-            icon(label: "Humidity", systemName: "humidity", text: "\(weather.daily.first!.humidity)%")
+            icon(label: "Humidity", systemName: "humidity", text: weather.humidity)
         }
         .roundedThinMaterial()
     }

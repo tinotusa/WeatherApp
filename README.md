@@ -11,4 +11,3 @@ A simple weather app that pulls data from [OpenWeatherMap](openweathermap.org)
 |  |  |
 |---|---|
 |![list view](./PreviewPictures/listView.png)|![Detail view](./PreviewPictures/detailView.png)|
-

@@ -58,7 +58,7 @@ struct NetworkManager {
             "cnt": "7",
             "units": Locale.current.usesMetricSystem ? "metric" : "imperial",
             "lang": Locale.current.languageCode ?? "en",
-            "exclude": "current,minutely,hourly",
+            "exclude": "current,minutely",
         ]
         
         guard let url = buildURL(string: Constants.baseDailyWeatherURL, parameters: queries) else {
@@ -86,7 +86,7 @@ struct NetworkManager {
         return nil
     }
     
-    // MARK: - Pexels
+    // MARK: - Unsplashed
     static func loadImage(name: String) async -> UnsplashedSearchResponse? {
         let parameters = [
             "query": name,
@@ -115,6 +115,7 @@ struct NetworkManager {
     }
 }
 
+// TODO: move me
 struct UnsplashedPhotoURLS: Codable {
     let raw: URL
     let full: URL
