@@ -10,8 +10,9 @@ import SwiftUI
 
 final class WeatherViewModel: ObservableObject {
     @Published var weatherModel = WeatherModel()
+    @Published var isLoading = false
     
-    var dailyWeather: [DailyWeatherResponse] {
+    var weather: [DailyWeatherResponse] {
         get { weatherModel.weather }
         set { weatherModel.weather = newValue }
     }
@@ -21,10 +22,6 @@ final class WeatherViewModel: ObservableObject {
     }
     var suggestions: [GeoResponse] {
         weatherModel.suggestions
-    }
-    
-    var isLoading: Bool {
-        weatherModel.isLoading
     }
     
     init() {
@@ -50,11 +47,15 @@ final class WeatherViewModel: ObservableObject {
     
     @MainActor
     func searchAPI(for searchTerm: String) async {
+        isLoading = true
+        defer { isLoading = false }
         await weatherModel.searchAPI(for: searchTerm)
     }
 
     @MainActor
     func loadWeather() async {
+        isLoading = true
+        defer { isLoading = false }
         await weatherModel.loadWeather()
     }
 }

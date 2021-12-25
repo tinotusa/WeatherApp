@@ -48,11 +48,9 @@ private extension HomeView {
                 Spacer()
             } else {
                 ScrollView(showsIndicators: false) {
-                    Group {
-                        ForEach(viewModel.dailyWeather) { weather in
-                            WeatherRow(weather: weather)
-                                .id(UUID())
-                        }
+                    ForEach(viewModel.weather) { weather in
+                        WeatherRow(weather: weather)
+                            .disabled(viewModel.isLoading)
                     }
                     .frame(maxWidth: .infinity)
                 }
@@ -64,7 +62,7 @@ private extension HomeView {
 struct HomeView_Previews: PreviewProvider {
     static let viewModel: WeatherViewModel = {
         let model = WeatherViewModel()
-        model.dailyWeather = [DailyWeatherResponse.example]
+        model.weather = [DailyWeatherResponse.example]
         return model
     }()
     

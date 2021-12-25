@@ -10,7 +10,6 @@ import Foundation
 struct WeatherModel {
     var suggestions = [GeoResponse]()
     var weather = [DailyWeatherResponse]()
-    var isLoading = false
     
     mutating func addLocation(_ location: DailyWeatherResponse) {
         if weather.contains(location) {
@@ -21,9 +20,7 @@ struct WeatherModel {
     }
     
     mutating func searchAPI(for searchTerm: String) async {
-        isLoading = true
         suggestions = await NetworkManager.loadSuggestions(for: searchTerm)
-        isLoading = false
     }
     
     mutating func load() {

@@ -13,11 +13,7 @@ struct SuggestionsView: View {
     
     var body: some View {
         if weatherViewModel.isLoading {
-            VStack {
-                Spacer()
-                ProgressView()
-                Spacer()
-            }
+            loadingView
         } else {
             suggestionsList
         }
@@ -25,6 +21,17 @@ struct SuggestionsView: View {
 }
 
 private extension SuggestionsView {
+    @ViewBuilder
+    var loadingView: some View {
+        VStack {
+            Spacer()
+            ProgressView()
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.thinMaterial)
+    }
+    
     @ViewBuilder
     var suggestionsList: some View {
         if weatherViewModel.suggestions.isEmpty {
