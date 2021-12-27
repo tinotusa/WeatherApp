@@ -62,11 +62,22 @@ private extension WeatherDetail {
     @ViewBuilder
     var weatherWarning: some View {
         if weather.hasAlert {
-            Text("Warning")
-                .bold()
-                .font(.title)
-            Text(weather.alerts!.first!.event)
+            VStack(alignment: .leading) {
+                Text("Warning")
+                    .bold()
+                    .font(.title)
+                Text("From: \(weather.alerts!.first!.senderName)")
+                Text(weather.alerts!.first!.event)
+                Text("From: \(dateFormatter(weather.alerts!.first!.start))")
+                Text("To: \(dateFormatter(weather.alerts!.first!.end))")
+            }
         }
+    }
+    
+    func dateFormatter(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        return formatter.string(from: date)
     }
     
     @ViewBuilder

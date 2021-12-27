@@ -22,16 +22,24 @@ struct WeatherRow: View {
             ZStack(alignment: .bottomLeading) {
                 headerImage
 
-                HStack(alignment: .firstTextBaseline) {
-                    Text(weather.name)
-                        .font(.largeTitle)
-                        .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
-                    if weather.hasAlert {
-                        Image(systemName: "exclamationmark.triangle.fill")
-                            .renderingMode(.original)
-                            .resizable()
-                            .frame(width: Constants.width / 2, height: Constants.height / 2)
+                HStack(alignment: .bottom) {
+                    VStack(alignment: .leading) {
+                        if weather.hasAlert {
+                            HStack(alignment: .firstTextBaseline) {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .renderingMode(.original)
+                                    .resizable()
+                                    .frame(width: Constants.width / 2, height: Constants.height / 2)
+                                Text(weather.alerts!.first!.event)
+                                    .font(.title2)
+                            }
+                        }
+                        Spacer()
+                        Text(weather.name)
+                            .font(.largeTitle)
+                            .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
                     }
+                    
                     Spacer()
                     
                     temperatures
