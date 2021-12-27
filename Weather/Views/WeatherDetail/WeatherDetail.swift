@@ -27,6 +27,8 @@ struct WeatherDetail: View {
                         Spacer()
                     }
                     
+                    weatherWarning
+                    
                     HourlyRow(weather: weather)
                         .padding(.bottom)
 
@@ -58,6 +60,16 @@ struct WeatherDetail: View {
 
 private extension WeatherDetail {
     @ViewBuilder
+    var weatherWarning: some View {
+        if weather.hasAlert {
+            Text("Warning")
+                .bold()
+                .font(.title)
+            Text(weather.alerts!.first!.event)
+        }
+    }
+    
+    @ViewBuilder
     var footer: some View {
         HStack {
             Spacer()
@@ -68,6 +80,7 @@ private extension WeatherDetail {
         }
         .background(Color("background"))
     }
+
     var deleteButton: some View {
         Button {
             showingDeleteDialog = true

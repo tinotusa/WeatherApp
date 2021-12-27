@@ -102,6 +102,20 @@ struct HourlyItem: Codable, Identifiable {
     
 }
 
+struct WeatherAlert: Codable {
+    let senderName: String
+    let event: String
+    let start: Date
+    let end: Date
+    let description: String
+    let tags: [String]
+    
+    enum CodingKeys: String, CodingKey {
+        case senderName = "sender_name"
+        case event, start, end, description, tags
+    }
+}
+
 struct DailyWeatherResponse: Codable, Identifiable, Equatable {
     let id = UUID()
     var place: GeoResponse?
@@ -114,9 +128,10 @@ struct DailyWeatherResponse: Codable, Identifiable, Equatable {
     let lon: Double
     let daily: [WeatherItem]
     let hourly: [HourlyItem]
+    let alerts: [WeatherAlert]?
     
     enum CodingKeys: CodingKey {
-        case lat, lon, daily, place, hourly
+        case lat, lon, daily, place, hourly, alerts
     }
     
     var coord: Coordinates {
@@ -142,15 +157,14 @@ struct DailyWeatherResponse: Codable, Identifiable, Equatable {
         return "N/A"
     }
     
+    var hasAlert: Bool {
+        alerts != nil
+    }
+    
     var nextTwelveHours: [HourlyItem] {
         var hours = [HourlyItem]()
-        for currentHour in hourly {
-            let componenets = Calendar.current.dateComponents([.hour], from: currentHour.date)
-            if let hour = componenets.hour, hour == 23 {
-                hours.append(currentHour)
-                break
-            }
-            hours.append(currentHour)
+        for i in 0 ..< 12 {
+            hours.append(hourly[i])
         }
         
         return hours

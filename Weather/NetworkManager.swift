@@ -80,7 +80,7 @@ struct NetworkManager {
             dailyWeather.unsplashedPhoto = photo?.results.randomElement()!
             return dailyWeather
         } catch {
-            print("Error in \(#function). Failed to decode data from url.\n\(error)")
+            print("Error in \(#function). Failed to decode data from url (\(url)).\n\(error)")
         }
         return nil
     }

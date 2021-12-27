@@ -22,11 +22,16 @@ struct WeatherRow: View {
             ZStack(alignment: .bottomLeading) {
                 headerImage
 
-                HStack(alignment: .bottom) {
+                HStack(alignment: .firstTextBaseline) {
                     Text(weather.name)
                         .font(.largeTitle)
                         .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
-                    
+                    if weather.hasAlert {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .renderingMode(.original)
+                            .resizable()
+                            .frame(width: Constants.width / 2, height: Constants.height / 2)
+                    }
                     Spacer()
                     
                     temperatures
@@ -39,7 +44,7 @@ struct WeatherRow: View {
 
 private extension WeatherRow {
     var temperatures: some View {
-        VStack(alignment: .trailing, spacing: 0) {
+        VStack(spacing: 0) {
             Image(systemName: iconName(for: weather.iconID))
                 .renderingMode(.original)
                 .resizable()
