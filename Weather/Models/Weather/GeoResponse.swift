@@ -8,16 +8,21 @@
 import Foundation
 
 struct GeoCoordResponse: Codable {
+    struct System: Codable {
+        let country: String
+    }
+    
     let coord: Coordinates
     let name: String
     let id: Int
+    let sys: System
     
     func convertToGeoResponse() -> GeoResponse {
         GeoResponse(
             name: name,
             lat: coord.lat,
             lon: coord.lon,
-            country: "",
+            country: sys.country,
             state: nil,
             cityID: id
         )
