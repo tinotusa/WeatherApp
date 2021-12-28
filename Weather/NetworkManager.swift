@@ -38,6 +38,34 @@ struct NetworkManager {
         return responses
     }
     
+    static func loadPlace(lon: Double, lat: Double) async -> GeoCoordResponse? {
+        let parameters = [
+            "lon": "\(lon)",
+            "lat": "\(lat)",
+            "appid": Constants.weatherAPIKey,
+            "units": Locale.current.usesMetricSystem ? "metric" : "imperial",
+            "lang": Locale.current.languageCode ?? "en"
+        ]
+        let urlString = Constants.baseGeoCoordURL
+        guard let url = buildURL(string: urlString, parameters: parameters) else {
+            fatalError("Failed to build url from string \(urlString)\nWith parameters: \(parameters)")
+        }
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+            if let httpResponse = response as? HTTPURLResponse,
+               !(200 ..< 299).contains(httpResponse.statusCode)
+            {
+                print("Error: invalid response from server in \(#function)")
+                return nil
+            }
+            return try JSONDecoder().decode(GeoCoordResponse.self, from: data)
+        } catch {
+            print("Error in \(#function)failed to decode data")
+            print(url)
+        }
+        return nil
+    }
+    
     private static func buildURL(string: String, parameters: [String: String]) -> URL? {
         guard var urlComponents = URLComponents(string: string) else {
             fatalError("Error \(#function) failed to create url from string: \(string)")
@@ -77,7 +105,9 @@ struct NetworkManager {
             var dailyWeather = try decoder.decode(DailyWeatherResponse.self, from: data)
             dailyWeather.place = place
             let photo = await loadImage(name: place.text)
-            dailyWeather.unsplashedPhoto = photo?.results.randomElement()!
+            if let photo = photo, !photo.results.isEmpty {
+                dailyWeather.unsplashedPhoto = photo.results.randomElement()!
+            }
             return dailyWeather
         } catch {
             print("Error in \(#function). Failed to decode data from url (\(url)).\n\(error)")

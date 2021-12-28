@@ -7,6 +7,23 @@
 
 import Foundation
 
+struct GeoCoordResponse: Codable {
+    let coord: Coordinates
+    let name: String
+    let id: Int
+    
+    func convertToGeoResponse() -> GeoResponse {
+        GeoResponse(
+            name: name,
+            lat: coord.lat,
+            lon: coord.lon,
+            country: "",
+            state: nil,
+            cityID: id
+        )
+    }
+}
+
 struct GeoResponse: Codable, Identifiable, Equatable {
     let name: String
     let lat: Double
@@ -14,13 +31,14 @@ struct GeoResponse: Codable, Identifiable, Equatable {
     let country: String
     let state: String?
     let id = UUID()
+    let cityID: Int?
     
     var coord: Coordinates {
         Coordinates(lon: lon, lat: lat)
     }
     
     enum CodingKeys: CodingKey {
-        case name, lat, lon, country, state
+        case name, lat, lon, country, state, cityID
     }
 
     var text: String {
@@ -40,7 +58,8 @@ struct GeoResponse: Codable, Identifiable, Equatable {
             lat: 0.0,
             lon: 0.0,
             country: "AU",
-            state: nil
+            state: nil,
+            cityID: nil
         )
     }
 }

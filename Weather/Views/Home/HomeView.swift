@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct HomeView: View {
     @EnvironmentObject var viewModel: WeatherViewModel
     @State private var searchText = ""
+    @StateObject var locationManager = LocationManager()
     
     var body: some View {
         NavigationView {
@@ -29,6 +31,23 @@ struct HomeView: View {
         .onSubmit(of: .search) {
             Task {
                 await viewModel.searchAPI(for: searchText)
+            }
+        }
+        .onReceive(locationManager.$lastLocation) { location in
+            Task {
+                if locationManager.lastLocation != nil {
+                    let coords = Coordinates(
+                        lon: locationManager.lastLocation!.coordinate.longitude,
+                        lat: locationManager.lastLocation!.coordinate.latitude
+                    )
+                    guard let place = await NetworkManager.loadPlace(lon: coords.lon, lat: coords.lat) else { return }
+                    guard let weather = await NetworkManager.loadDailyWeather(for: coords, place: place.convertToGeoResponse()) else { return }
+                    print(place)
+                    if !viewModel.weather.contains(where: {$0.place?.cityID == place.id }) {
+                        viewModel.weather.insert(weather, at: 0)
+                        viewModel.save()
+                    }
+                }
             }
         }
         .task {

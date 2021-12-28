@@ -35,7 +35,7 @@ struct WeatherRow: View {
                             }
                         }
                         Spacer()
-                        Text(weather.name)
+                        Text(weather.name.isEmpty ? "Your location" : weather.name)
                             .font(.largeTitle)
                             .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
                     }
@@ -63,17 +63,23 @@ private extension WeatherRow {
         .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
     }
     
+    @ViewBuilder
     var headerImage: some View {
-        AsyncImage(url: weather.unsplashedPhoto?.urls.regular) { image in
-            image
-                .resizable()
-                .scaledToFill()
+        if weather.unsplashedPhoto == nil {
+            Color.gray
                 .frame(height: Constants.imageHeight)
-                .clipped()
-        } placeholder: {
-            ProgressView()
+        } else {
+            AsyncImage(url: weather.unsplashedPhoto?.urls.regular) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: Constants.imageHeight)
+                    .clipped()
+            } placeholder: {
+                ProgressView()
+            }
+            .frame(height: Constants.imageHeight)
         }
-        .frame(height: Constants.imageHeight)
     }
 }
 
