@@ -75,6 +75,7 @@ private extension HomeView {
                 }
             }
         }
+        .frame(maxWidth: .infinity)
     }
 }
 
