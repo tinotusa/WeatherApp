@@ -14,6 +14,7 @@ struct WeatherDetail: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var showingDeleteDialog = false
+    @State private var showMore = false
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -68,6 +69,25 @@ private extension WeatherDetail {
                     .font(.title)
                 Text("From: \(weather.alerts!.first!.senderName)")
                 Text(weather.alerts!.first!.event)
+                Button {
+                    withAnimation {
+                        showMore.toggle()
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: showMore ? "chevron.up" : "chevron.down" )
+                        Text(showMore ? "Hide" : "Show more")
+                            .animation(nil)
+                    }
+                    
+                }
+                
+                if showMore {
+                    ScrollView(showsIndicators: false) {
+                        Text(weather.alerts!.first!.description)
+                    }
+                    .frame(height: 200)
+                }
                 Text("From: \(dateFormatter(weather.alerts!.first!.start))")
                 Text("To: \(dateFormatter(weather.alerts!.first!.end))")
             }
