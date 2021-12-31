@@ -51,6 +51,7 @@ struct WeatherRow: View {
             .foregroundColor(Color("text"))
             .padding(.horizontal)
         }
+        .accessibilityIdentifier("weatherRowButton")
     }
 }
 

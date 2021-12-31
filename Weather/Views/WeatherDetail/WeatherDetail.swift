@@ -68,25 +68,27 @@ private extension WeatherDetail {
                     .bold()
                     .font(.title)
                 Text("From: \(weather.alerts!.first!.senderName)")
-                Text(weather.alerts!.first!.event)
-                Button {
-                    withAnimation {
-                        showMore.toggle()
+                HStack {
+                    Text(weather.alerts!.first!.event)
+                    Spacer()
+                    Button {
+                        withAnimation {
+                            showMore.toggle()
+                        }
+                    } label: {
+                        HStack {
+                            Image(systemName: showMore ? "chevron.up" : "chevron.down" )
+                            Text(showMore ? "Hide" : "Show more")
+                                .animation(nil)
+                        }
                     }
-                } label: {
-                    HStack {
-                        Image(systemName: showMore ? "chevron.up" : "chevron.down" )
-                        Text(showMore ? "Hide" : "Show more")
-                            .animation(nil)
-                    }
-                    
                 }
                 
                 if showMore {
                     ScrollView(showsIndicators: false) {
                         Text(weather.alerts!.first!.description)
                     }
-                    .frame(height: 200)
+                    .frame(maxHeight: 200)
                 }
                 Text("From: \(dateFormatter(weather.alerts!.first!.start))")
                 Text("To: \(dateFormatter(weather.alerts!.first!.end))")
@@ -118,6 +120,7 @@ private extension WeatherDetail {
         } label: {
             Image(systemName: "trash")
         }
+        .accessibilityIdentifier("toolbarDeleteButton")
     }
 }
 

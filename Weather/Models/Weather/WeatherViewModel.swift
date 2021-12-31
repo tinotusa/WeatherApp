@@ -13,12 +13,12 @@ final class WeatherViewModel: ObservableObject {
     @Published var isLoading = false
     
     var weather: [DailyWeatherResponse] {
-        get { weatherModel.weather }
-        set { weatherModel.weather = newValue }
+        get { weatherModel.weatherLocations }
+        set { weatherModel.weatherLocations = newValue }
     }
     
     var hasWeatherItems: Bool {
-        !weatherModel.weather.isEmpty
+        !weatherModel.weatherLocations.isEmpty
     }
     var suggestions: [GeoResponse] {
         weatherModel.suggestions

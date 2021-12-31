@@ -54,9 +54,11 @@ private extension SuggestionsView {
                     } label: {
                         Text(suggestion.text)
                     }
+                    .accessibilityIdentifier("weatherButton")
                     Text(suggestion.text)
                 }
             }
+            
         }
     }
 }
