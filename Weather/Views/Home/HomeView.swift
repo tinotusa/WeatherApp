@@ -12,6 +12,7 @@ struct HomeView: View {
     @EnvironmentObject var viewModel: WeatherViewModel
     @State private var searchText = ""
     @StateObject var locationManager = LocationManager()
+    @State private var draggedWeather: DailyWeatherResponse?
     
     var body: some View {
         NavigationView {
@@ -42,7 +43,6 @@ struct HomeView: View {
                     )
                     guard let place = await NetworkManager.loadPlace(lon: coords.lon, lat: coords.lat) else { return }
                     guard let weather = await NetworkManager.loadDailyWeather(for: coords, place: place.convertToGeoResponse()) else { return }
-                    print(place)
                     if !viewModel.weather.contains(where: {$0.place?.cityID == place.id }) {
                         viewModel.weather.insert(weather, at: 0)
                         viewModel.save()
@@ -70,8 +70,18 @@ private extension HomeView {
                     ForEach(viewModel.weather) { weather in
                         WeatherRow(weather: weather)
                             .disabled(viewModel.isLoading)
+                            .onDrag {
+                                draggedWeather = weather
+                                return NSItemProvider(object: weather)
+                            } 
+                            .onDrop(
+                                of: [DailyWeatherResponse.typeIdentifier],
+                                delegate: WeatherRowDropDelegate(
+                                    weatherList: $viewModel.weather,
+                                    currentWeather: weather, draggedWeather: draggedWeather
+                                )
+                            )
                     }
-                    .frame(maxWidth: .infinity)
                 }
             }
         }

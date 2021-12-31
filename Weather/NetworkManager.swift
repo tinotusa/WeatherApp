@@ -61,7 +61,6 @@ struct NetworkManager {
             return try JSONDecoder().decode(GeoCoordResponse.self, from: data)
         } catch {
             print("Error in \(#function)failed to decode data")
-            print(url)
         }
         return nil
     }
@@ -102,7 +101,7 @@ struct NetworkManager {
             }
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .secondsSince1970
-            var dailyWeather = try decoder.decode(DailyWeatherResponse.self, from: data)
+            let dailyWeather = try decoder.decode(DailyWeatherResponse.self, from: data)
             dailyWeather.place = place
             let photo = await loadImage(name: place.text)
             if let photo = photo, !photo.results.isEmpty {

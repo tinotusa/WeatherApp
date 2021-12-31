@@ -25,7 +25,7 @@ struct DetailHeader: View {
             Text("\(weather.temp)")
                 .font(.largeTitle)
                 .bold()
-            Text("\(weather.description.capitalizeFirst)")
+            Text("\(weather.weatherDescription.capitalizeFirst)")
             Spacer()
         }
     }

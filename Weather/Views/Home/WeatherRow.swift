@@ -31,7 +31,7 @@ struct WeatherRow: View {
                                     .resizable()
                                     .frame(width: Constants.width / 2, height: Constants.height / 2)
                                 Text(weather.alerts!.first!.event)
-                                    .font(.title2)
+                                    .font(.title3)
                             }
                         }
                         Spacer()
@@ -39,13 +39,17 @@ struct WeatherRow: View {
                             .font(.largeTitle)
                             .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
                     }
+                    .padding(.top)
                     
                     Spacer()
                     
                     temperatures
                 }
+                .padding(.horizontal)
             }
+            .cornerRadius(20)
             .foregroundColor(Color("text"))
+            .padding(.horizontal)
         }
     }
 }

@@ -116,7 +116,7 @@ struct WeatherAlert: Codable {
     }
 }
 
-struct DailyWeatherResponse: Codable, Identifiable, Equatable {
+class DailyWeatherResponse: NSObject, Codable, Identifiable {
     let id = UUID()
     var place: GeoResponse?
     
@@ -247,6 +247,8 @@ struct DailyWeatherResponse: Codable, Identifiable, Equatable {
     }
 }
 
+
+
 // MARK: - Functions for the current day
 extension DailyWeatherResponse {
     var current: WeatherItem {
@@ -284,7 +286,7 @@ extension DailyWeatherResponse {
         String(format: "%g%%", current.humidity)
     }
     
-    var description: String {
+    var weatherDescription: String {
         current.description.first!.description
     }
 }
