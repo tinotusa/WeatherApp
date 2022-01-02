@@ -7,42 +7,60 @@
 
 import SwiftUI
 
+struct UltraThinMatrialShadow: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .background(.ultraThinMaterial)
+            .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 10)
+            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 2)
+    }
+}
+
+extension View {
+    func ultraThinMaterialShadow() -> some View {
+        modifier(UltraThinMatrialShadow())
+    }
+}
+
 struct HourlyRow: View {
     let weather: DailyWeatherResponse
-    
-    struct Constants {
-        static let width = 30.0
-        static let height = 30.0
-    }
-    
+
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Hourly")
-                .bold()
-                .font(.title)
-
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(weather.nextTwelveHours) { hour in
-                        VStack {
-                            Text("\(hour.formattedTime)")
-                            Image(systemName: iconName(for: hour.iconID))
-                                .resizable()
-                                .renderingMode(.original)
-                                .frame(width: Constants.width, height: Constants.height)
-                            Text(formatTemp(hour.temp))
+                    ForEach(Array(weather.nextTwelveHours.enumerated()), id: \.offset) { index, hour in
+                        ZStack(alignment: .bottom) {
+                            if index == 0 {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .foregroundColor(Color("highlight").opacity(0.2))
+                            }
+                            VStack(spacing: 0) {
+                                Text("\(hour.formattedTime)")
+                                Image(systemName: iconName(for: hour.iconID))
+                                    .renderingMode(.original)
+                                    .font(.largeTitle)
+                                Text(formatTemp(hour.temp))
+                            }
+                            .font(.subheadline)
+                            .foregroundColor(Color("text"))
+                            .padding()
                         }
-                        .padding(.trailing)
                     }
                 }
             }
         }
+        .padding()
+        .ultraThinMaterialShadow()
+        .cornerRadius(15)
+        
     }
 }
-
 struct HourlyRow_Previews: PreviewProvider {
     static var previews: some View {
         HourlyRow(weather: DailyWeatherResponse.example)
             .environmentObject(WeatherViewModel())
+            .background(.black.opacity(0.8))
+            .previewLayout(.fixed(width: 450, height: 140))
     }
 }

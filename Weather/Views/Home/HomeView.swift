@@ -63,7 +63,9 @@ private extension HomeView {
         VStack {
             if !viewModel.hasWeatherItems {
                 Spacer()
-                Text("Add a location by tapping the search bar")
+                Text("Search for a location.")
+                    .font(.title)
+                    .foregroundColor(.secondary)
                 Spacer()
             } else {
                 ScrollView(showsIndicators: false) {

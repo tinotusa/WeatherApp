@@ -42,6 +42,13 @@ struct GeoResponse: Codable, Identifiable, Equatable {
         Coordinates(lon: lon, lat: lat)
     }
     
+    var fullname: String {
+        if state != nil {
+            return "\(name), \(state!), \(country)"
+        }
+        return "\(name), \(country)"
+    }
+    
     enum CodingKeys: CodingKey {
         case name, lat, lon, country, state, cityID
     }

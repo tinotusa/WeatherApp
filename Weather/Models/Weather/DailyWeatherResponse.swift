@@ -69,8 +69,8 @@ struct WeatherItem: Codable, Identifiable {
     }
 }
 
-struct HourlyItem: Codable, Identifiable {
-    struct WeatherItem: Codable {
+struct HourlyItem: Codable, Hashable, Equatable, Identifiable {
+    struct WeatherItem: Codable, Hashable {
         let id: Int
     }
     
@@ -163,8 +163,12 @@ class DailyWeatherResponse: NSObject, Codable, Identifiable {
     
     var nextTwelveHours: [HourlyItem] {
         var hours = [HourlyItem]()
-        for i in 0 ..< 12 {
-            hours.append(hourly[i])
+        for i in 0 ..< 12 where i < hourly.count {
+//            if i < hourly.count {
+                hours.append(hourly[i])
+//            } else {
+//                break
+//            }
         }
         
         return hours
@@ -238,6 +242,52 @@ class DailyWeatherResponse: NSObject, Codable, Identifiable {
             }
           ],
           "pop": 0
+        },
+        {
+          "dt": 1618315200,
+          "temp": 282.58,
+          "feels_like": 280.4,
+          "pressure": 1019,
+          "humidity": 68,
+          "dew_point": 276.98,
+          "uvi": 1.4,
+          "clouds": 19,
+          "visibility": 306,
+          "wind_speed": 4.12,
+          "wind_deg": 296,
+          "wind_gust": 7.33,
+          "weather": [
+            {
+              "id": 801,
+              "main": "Clouds",
+              "description": "few clouds",
+              "icon": "02d"
+            }
+          ],
+          "pop": 0
+        },
+        {
+          "dt": 1618315200,
+          "temp": 282.58,
+          "feels_like": 280.4,
+          "pressure": 1019,
+          "humidity": 68,
+          "dew_point": 276.98,
+          "uvi": 1.4,
+          "clouds": 19,
+          "visibility": 306,
+          "wind_speed": 4.12,
+          "wind_deg": 296,
+          "wind_gust": 7.33,
+          "weather": [
+            {
+              "id": 801,
+              "main": "Clouds",
+              "description": "few clouds",
+              "icon": "02d"
+            }
+          ],
+          "pop": 0
         }
     ]
 }
@@ -269,6 +319,26 @@ extension DailyWeatherResponse {
     
     var maxTemp: String {
         formatTemp(current.temp.max)
+    }
+    
+    private func dateFormatter(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
+    }
+    
+    var sunrise: String {
+        let time = dateFormatter(current.sunrise)
+        let now = dateFormatter(Date())
+        if time == now { return "Now" }
+        return time
+    }
+    
+    var sunset: String {
+        let time = dateFormatter(current.sunset)
+        let now = dateFormatter(Date())
+        if time == now { return "Now" }
+        return time
     }
     
     var windDeg: String {

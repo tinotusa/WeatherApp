@@ -22,30 +22,35 @@ struct WeatherRow: View {
             ZStack(alignment: .bottomLeading) {
                 headerImage
 
-                HStack(alignment: .bottom) {
-                    VStack(alignment: .leading) {
-                        if weather.hasAlert {
-                            HStack(alignment: .firstTextBaseline) {
-                                Image(systemName: "exclamationmark.triangle.fill")
-                                    .renderingMode(.original)
-                                    .resizable()
-                                    .frame(width: Constants.width / 2, height: Constants.height / 2)
-                                Text(weather.alerts!.first!.event)
-                                    .font(.title3)
+                ZStack(alignment: .bottom) {
+                    Rectangle()
+                        .foregroundColor(.black.opacity(0.3))
+                        .frame(height: 70)
+                    HStack(alignment: .bottom) {
+                        VStack(alignment: .leading) {
+                            if weather.hasAlert {
+                                HStack(alignment: .firstTextBaseline) {
+                                    Image(systemName: "exclamationmark.triangle.fill")
+                                        .renderingMode(.original)
+                                        .resizable()
+                                        .frame(width: Constants.width / 2, height: Constants.height / 2)
+                                    Text(weather.alerts!.first!.event)
+                                        .font(.title3)
+                                }
                             }
+                            Spacer()
+                            Text(weather.name.isEmpty ? "Your location" : weather.name)
+                                .font(.largeTitle)
+                                .bold()
                         }
+                        .padding(.top)
+                        
                         Spacer()
-                        Text(weather.name.isEmpty ? "Your location" : weather.name)
-                            .font(.largeTitle)
-                            .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
+                        
+                        temperatures
                     }
-                    .padding(.top)
-                    
-                    Spacer()
-                    
-                    temperatures
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
             }
             .cornerRadius(20)
             .foregroundColor(Color("text"))
@@ -57,13 +62,14 @@ struct WeatherRow: View {
 
 private extension WeatherRow {
     var temperatures: some View {
-        VStack(spacing: 0) {
+        HStack {
             Image(systemName: iconName(for: weather.iconID))
                 .renderingMode(.original)
                 .resizable()
                 .frame(width: Constants.width, height: Constants.height)
             Text("\(weather.temp)")
-                .font(.largeTitle)
+                .font(.system(size: 50))
+                .bold()
         }
         .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
     }

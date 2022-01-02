@@ -8,119 +8,72 @@
 import SwiftUI
 
 struct WeatherDetail: View {
-    let weather: DailyWeatherResponse
-    
-    @EnvironmentObject var viewModel: WeatherViewModel
+    @StateObject var detailViewModel: WeatherDetailViewModel
     @Environment(\.dismiss) var dismiss
     
-    @State private var showingDeleteDialog = false
-    @State private var showMore = false
+    init(weather: DailyWeatherResponse) {
+        _detailViewModel = StateObject(wrappedValue: WeatherDetailViewModel(weather: weather))
+    }
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            Color("background")
-                .ignoresSafeArea()
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Spacer()
-                        DetailHeader(weather: weather)
-                        Spacer()
-                    }
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                backgroundImage
+                    .frame(width: proxy.size.width, height: proxy.size.height)
+                
+                ScrollView(showsIndicators: false) {
+                    DetailHeader(weather: detailViewModel.weather)
+                        .padding(.top, proxy.size.height * 0.05)
+                    HourlyRow(weather: detailViewModel.weather)
                     
-                    weatherWarning
-                    
-                    HourlyRow(weather: weather)
-                        .padding(.bottom)
-
-                    WeekTemperatureView(weather: weather)
-                        .padding(.bottom)
-                    
-                    HeaderRow(weather: weather)
+                    Spacer()
                 }
                 .padding(.horizontal)
+                
+                HStack {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Label("Weather", systemImage: "chevron.left")
+                            .symbolRenderingMode(.monochrome)
+                    }
+
+                    Spacer()
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "trash")
+                            .renderingMode(.original)
+                    }
+                }
+                .padding(.horizontal)
+                .font(.title2)
             }
-            footer
         }
-        .navigationTitle(weather.place?.name ?? "")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            deleteButton
-        }
-        .confirmationDialog(
-            Text("Permanently erase the items in the trash?"),
-            isPresented: $showingDeleteDialog
-        ) {
-            Button("Delete", role: .destructive) {
-                viewModel.removeWeather(weather)
-                dismiss()
-            }
-        }
+        .navigationBarHidden(true)
     }
 }
 
 private extension WeatherDetail {
     @ViewBuilder
-    var weatherWarning: some View {
-        if weather.hasAlert {
-            VStack(alignment: .leading) {
-                Text("Warning")
-                    .bold()
-                    .font(.title)
-                Text("From: \(weather.alerts!.first!.senderName)")
+    var backgroundImage: some View {
+        AsyncImage(url: detailViewModel.photoURL) { image in
+            image
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+                .blur(radius: 10)
+        } placeholder: {
+            VStack {
+                Spacer()
                 HStack {
-                    Text(weather.alerts!.first!.event)
                     Spacer()
-                    Button {
-                        withAnimation {
-                            showMore.toggle()
-                        }
-                    } label: {
-                        HStack {
-                            Image(systemName: showMore ? "chevron.up" : "chevron.down" )
-                            Text(showMore ? "Hide" : "Show more")
-                                .animation(nil)
-                        }
-                    }
+                    ProgressView()
+                    Spacer()
                 }
-                
-                if showMore {
-                    ScrollView(showsIndicators: false) {
-                        Text(weather.alerts!.first!.description)
-                    }
-                    .frame(maxHeight: 200)
-                }
-                Text("From: \(dateFormatter(weather.alerts!.first!.start))")
-                Text("To: \(dateFormatter(weather.alerts!.first!.end))")
+                Spacer()
             }
         }
-    }
-    
-    func dateFormatter(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        return formatter.string(from: date)
-    }
-    
-    @ViewBuilder
-    var footer: some View {
-        HStack {
-            Spacer()
-            Link(destination: URL(string: "https://openweathermap.org")!) {
-                Text("OpenWeatherMaps.org")
-            }
-            Spacer()
-        }
-        .background(Color("background"))
-    }
-
-    var deleteButton: some View {
-        Button {
-            showingDeleteDialog = true
-        } label: {
-            Image(systemName: "trash")
-        }
-        .accessibilityIdentifier("toolbarDeleteButton")
     }
 }
 
@@ -128,5 +81,6 @@ struct WeatherDetail_Previews: PreviewProvider {
     static var previews: some View {
         WeatherDetail(weather: DailyWeatherResponse.example)
             .environmentObject(WeatherViewModel())
+            .background(.black.opacity(0.8))
     }
 }
