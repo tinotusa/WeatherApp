@@ -7,45 +7,28 @@
 
 import SwiftUI
 
-struct UltraThinMatrialShadow: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .background(.ultraThinMaterial)
-            .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 10)
-            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 2)
-    }
-}
-
-extension View {
-    func ultraThinMaterialShadow() -> some View {
-        modifier(UltraThinMatrialShadow())
-    }
-}
-
 struct HourlyRow: View {
     let weather: DailyWeatherResponse
 
     var body: some View {
-        VStack(alignment: .leading) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(Array(weather.nextTwelveHours.enumerated()), id: \.offset) { index, hour in
-                        ZStack(alignment: .bottom) {
-                            if index == 0 {
-                                RoundedRectangle(cornerRadius: 15)
-                                    .foregroundColor(Color("highlight").opacity(0.2))
-                            }
-                            VStack(spacing: 0) {
-                                Text("\(hour.formattedTime)")
-                                Image(systemName: iconName(for: hour.iconID))
-                                    .renderingMode(.original)
-                                    .font(.largeTitle)
-                                Text(formatTemp(hour.temp))
-                            }
-                            .font(.subheadline)
-                            .foregroundColor(Color("text"))
-                            .padding()
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(Array(weather.nextTwelveHours.enumerated()), id: \.offset) { index, hour in
+                    ZStack(alignment: .bottom) {
+                        if index == 0 {
+                            RoundedRectangle(cornerRadius: 15)
+                                .foregroundColor(Color("highlight").opacity(0.2))
                         }
+                        VStack(spacing: 0) {
+                            Text("\(hour.formattedTime)")
+                            Image(systemName: iconName(for: hour.iconID))
+                                .renderingMode(.original)
+                                .font(.largeTitle)
+                            Text(formatTemp(hour.temp))
+                        }
+                        .font(.title2)
+                        .foregroundColor(Color("text"))
+                        .padding()
                     }
                 }
             }

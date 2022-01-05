@@ -26,6 +26,8 @@ struct WeatherDetail: View {
                         .padding(.top, proxy.size.height * 0.05)
                     HourlyRow(weather: detailViewModel.weather)
                     
+                    WeekTemperatureView(weather: detailViewModel.weather)
+                    
                     Spacer()
                 }
                 .padding(.horizontal)

@@ -34,6 +34,7 @@
 		216B8B282765ADD7001E4FC5 /* HeaderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216B8B272765ADD7001E4FC5 /* HeaderRow.swift */; };
 		216B8B2A2765AE05001E4FC5 /* WeekTemperatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216B8B292765AE05001E4FC5 /* WeekTemperatureView.swift */; };
 		216B8B312765E5B7001E4FC5 /* String+capitalizeFirst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216B8B302765E5B7001E4FC5 /* String+capitalizeFirst.swift */; };
+		2175206327859D8A00E759C3 /* View+UltraThinMaterialShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175206227859D8A00E759C3 /* View+UltraThinMaterialShadow.swift */; };
 		2193467827819ADC00AB9ADB /* WeatherDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2193467727819ADC00AB9ADB /* WeatherDetailViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +86,7 @@
 		216B8B272765ADD7001E4FC5 /* HeaderRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderRow.swift; sourceTree = "<group>"; };
 		216B8B292765AE05001E4FC5 /* WeekTemperatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekTemperatureView.swift; sourceTree = "<group>"; };
 		216B8B302765E5B7001E4FC5 /* String+capitalizeFirst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+capitalizeFirst.swift"; sourceTree = "<group>"; };
+		2175206227859D8A00E759C3 /* View+UltraThinMaterialShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+UltraThinMaterialShadow.swift"; sourceTree = "<group>"; };
 		2193467727819ADC00AB9ADB /* WeatherDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -249,6 +251,7 @@
 			children = (
 				216B8B302765E5B7001E4FC5 /* String+capitalizeFirst.swift */,
 				213360E1277B11C600B6A66A /* DailyWeatherResponse+NSItemProviderWriting.swift */,
+				2175206227859D8A00E759C3 /* View+UltraThinMaterialShadow.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -401,6 +404,7 @@
 				216B8B232765A90A001E4FC5 /* Weekdays.swift in Sources */,
 				213631E3275B6598004D6261 /* NetworkManager.swift in Sources */,
 				213631DE275B64E0004D6261 /* Constants.swift in Sources */,
+				2175206327859D8A00E759C3 /* View+UltraThinMaterialShadow.swift in Sources */,
 				212EF65427634BCF00883423 /* DailyWeatherResponse.swift in Sources */,
 				216B8B312765E5B7001E4FC5 /* String+capitalizeFirst.swift in Sources */,
 				212C8DAA27757F39001C1784 /* HourlyRow.swift in Sources */,

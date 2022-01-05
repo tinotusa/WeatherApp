@@ -11,26 +11,30 @@ struct WeekTemperatureView: View {
     let weather: DailyWeatherResponse
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Weekly")
-                .bold()
-                .font(.title)
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(weather.daily) { day in
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(Array(weather.daily.enumerated()), id: \.offset) { index, day in
+                    ZStack {
+                        if index == 0 {
+                            RoundedRectangle(cornerRadius: 15)
+                                .foregroundColor(Color("highlight").opacity(0.2))
+                        }
                         VStack {
                             Text("\(Weekday.weekday(from: day.date).shortName)")
                             Image(systemName: iconName(for: day.iconID))
-                                .renderingMode(.original)
+                                .symbolRenderingMode(.multicolor)
                             Text(day.dayTemp)
                         }
-                        .padding(.trailing)
                         .font(.title2)
+                        .foregroundColor(Color("text"))
+                        .padding()
                     }
                 }
             }
         }
+        .padding()
+        .ultraThinMaterialShadow()
+        .cornerRadius(15)
     }
 }
 
@@ -38,5 +42,6 @@ struct WeekTemperatureView: View {
 struct WeekTemperatureView_Previews: PreviewProvider {
     static var previews: some View {
         WeekTemperatureView(weather: DailyWeatherResponse.example)
+            .previewLayout(.fixed(width: 500, height: 140))
     }
 }
