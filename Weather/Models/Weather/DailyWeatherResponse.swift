@@ -49,15 +49,17 @@ struct WeatherItem: Codable, Identifiable {
     let windSpeed: Double
     let windDeg: Int
     let clouds: Int
-    let rain: Double?
-    let pop: Double
+    let rainVolume: Double? // in mm
+    let chanceOfRain: Double
     
     enum CodingKeys: String, CodingKey {
         case date = "dt"
         case windSpeed = "wind_speed"
         case windDeg = "wind_deg"
         case description = "weather"
-        case sunrise, sunset, temp, pressure, humidity, clouds, rain, pop
+        case chanceOfRain = "pop"
+        case rainVolume = "rain"
+        case sunrise, sunset, temp, pressure, humidity, clouds
     }
     
     var dayTemp: String {
@@ -126,12 +128,13 @@ class DailyWeatherResponse: NSObject, Codable, Identifiable {
     
     let lat: Double
     let lon: Double
+    let timezone_offset: Double
     let daily: [WeatherItem]
     let hourly: [HourlyItem]
     let alerts: [WeatherAlert]?
     
     enum CodingKeys: CodingKey {
-        case lat, lon, daily, place, hourly, alerts
+        case lat, lon, daily, place, hourly, alerts, timezone_offset
     }
     
     var coord: Coordinates {
@@ -164,11 +167,7 @@ class DailyWeatherResponse: NSObject, Codable, Identifiable {
     var nextTwelveHours: [HourlyItem] {
         var hours = [HourlyItem]()
         for i in 0 ..< 12 where i < hourly.count {
-//            if i < hourly.count {
-                hours.append(hourly[i])
-//            } else {
-//                break
-//            }
+            hours.append(hourly[i])
         }
         
         return hours
@@ -328,28 +327,30 @@ extension DailyWeatherResponse {
     }
     
     var sunrise: String {
-        let time = dateFormatter(current.sunrise)
-        let now = dateFormatter(Date())
-        if time == now { return "Now" }
-        return time
+        dateFormatter(current.sunrise)
     }
     
     var sunset: String {
-        let time = dateFormatter(current.sunset)
-        let now = dateFormatter(Date())
-        if time == now { return "Now" }
-        return time
+        dateFormatter(current.sunset)
+    }
+    
+    var windSpeed: String {
+        if Locale.current.usesMetricSystem {
+            return String(format: "%g m/s", current.windSpeed)
+        }
+        return String(format: "%g mph", current.windSpeed)
     }
     
     var windDeg: String {
-        if Locale.current.usesMetricSystem {
-            return String(format: "%d m/s", current.windDeg)
-        }
-        return String(format: "%d mph", current.windDeg)
+        return String(format: "%dº", current.windDeg)
     }
     
-    var rain: String {
-        String(format: "%g%%", current.rain ?? 0)
+    var pop: String {
+        String(format: "%g%%", current.chanceOfRain * 100.0)
+    }
+    
+    var rainVolume: String {
+        String(format: "%.0fmm", current.rainVolume ?? 0)
     }
     
     var humidity: String {

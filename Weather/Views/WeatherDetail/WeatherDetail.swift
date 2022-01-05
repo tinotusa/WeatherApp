@@ -24,6 +24,11 @@ struct WeatherDetail: View {
                 ScrollView(showsIndicators: false) {
                     DetailHeader(weather: detailViewModel.weather)
                         .padding(.top, proxy.size.height * 0.05)
+                    
+                    if detailViewModel.weather.hasAlert {
+                        WeatherWarning(weather: detailViewModel.weather)
+                    }
+                    
                     HourlyRow(weather: detailViewModel.weather)
                     
                     WeekTemperatureView(weather: detailViewModel.weather)

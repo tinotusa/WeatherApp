@@ -69,14 +69,20 @@ struct MoreInfoGrid: View {
                         .centered()
                 }
                 InfoItem(systemName: "cloud.rain.fill", title: "Rain") {
-                    Text("\(weather.rain)")
+                    Text("\(weather.pop)")
                         .font(.system(size: 50))
                         .foregroundColor(Color("text"))
                         .centered()
                 }
             }
             HStack {
-                InfoItem(systemName: "wind", title: "Wind") {
+                InfoItem(systemName: "wind", title: "Wind Speed") {
+                    Text("\(weather.windSpeed)")
+                        .foregroundColor(Color("text"))
+                        .font(.system(size: 50))
+                        .centered()
+                }
+                InfoItem(systemName: "wind", title: "Wind direction") {
                     Text("\(weather.windDeg)")
                         .foregroundColor(Color("text"))
                         .font(.system(size: 50))

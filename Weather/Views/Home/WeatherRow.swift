@@ -22,37 +22,32 @@ struct WeatherRow: View {
             ZStack(alignment: .bottomLeading) {
                 headerImage
 
-                ZStack(alignment: .bottom) {
-                    Rectangle()
-                        .foregroundColor(.black.opacity(0.3))
-                        .frame(height: 70)
-                    HStack(alignment: .bottom) {
-                        VStack(alignment: .leading) {
-                            if weather.hasAlert {
-                                HStack(alignment: .firstTextBaseline) {
-                                    Image(systemName: "exclamationmark.triangle.fill")
-                                        .renderingMode(.original)
-                                        .resizable()
-                                        .frame(width: Constants.width / 2, height: Constants.height / 2)
-                                    Text(weather.alerts!.first!.event)
-                                        .font(.title3)
-                                }
-                            }
-                            Spacer()
-                            Text(weather.name.isEmpty ? "Your location" : weather.name)
-                                .font(.largeTitle)
-                                .bold()
+                VStack(alignment: .leading) {
+                    if weather.hasAlert {
+                        HStack(alignment: .firstTextBaseline) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .renderingMode(.original)
+                                .resizable()
+                                .frame(width: Constants.width / 2, height: Constants.height / 2)
+                            Text(weather.alerts!.first!.event)
+                                .font(.title3)
                         }
                         .padding(.top)
-                        
+                    }
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Text(weather.name.isEmpty ? "Your location" : weather.name)
+                            .font(.largeTitle)
+                            .bold()
                         Spacer()
-                        
                         temperatures
                     }
-                    .padding(.horizontal)
                 }
+                .padding(.horizontal)
             }
-            .cornerRadius(20)
+            .cornerRadius(15)
             .foregroundColor(Color("text"))
             .padding(.horizontal)
         }
