@@ -28,6 +28,8 @@ struct WeatherDetail: View {
                     
                     WeekTemperatureView(weather: detailViewModel.weather)
                     
+                    MoreInfoGrid(weather: detailViewModel.weather)
+                    
                     Spacer()
                 }
                 .padding(.horizontal)
