@@ -31,7 +31,8 @@ struct WeatherWarning: View {
             }
             if weather.hasAlert {
                 Text(weather.alertEvent!)
-                Text("From: \(weather.formattedAlertStartDate) To: \(weather.formattedAlertEndDate)")
+                Text("From: \(weather.formattedAlertStartDate)")
+                Text("To: \(weather.formattedAlertEndDate)")
                 Text("By: \(weather.alertSenderName!)")
                 
                 if showMore {
