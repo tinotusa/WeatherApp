@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WeatherDetail: View {
     @StateObject var detailViewModel: WeatherDetailViewModel
+    @EnvironmentObject var weatherViewModel: WeatherViewModel
     @Environment(\.dismiss) var dismiss
     
     init(weather: DailyWeatherResponse) {
@@ -50,7 +51,7 @@ struct WeatherDetail: View {
 
                     Spacer()
                     Button {
-                        dismiss()
+                        detailViewModel.showingDeleteDialog = true
                     } label: {
                         Image(systemName: "trash")
                             .renderingMode(.original)
@@ -61,6 +62,16 @@ struct WeatherDetail: View {
             }
         }
         .navigationBarHidden(true)
+        .confirmationDialog(
+            "Delete location",
+            isPresented: $detailViewModel.showingDeleteDialog,
+            titleVisibility: .visible
+        ) {
+            Button("Delete", role: .destructive) {
+                weatherViewModel.removeWeather(detailViewModel.weather)
+                dismiss()
+            }
+        }
     }
 }
 

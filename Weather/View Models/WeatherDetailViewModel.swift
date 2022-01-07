@@ -16,12 +16,6 @@ final class WeatherDetailViewModel: ObservableObject {
     init(weather: DailyWeatherResponse) {
         self.weather = weather
     }
-    
-    static func dateFormatter(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        return formatter.string(from: date)
-    }
 }
 
 extension WeatherDetailViewModel {
