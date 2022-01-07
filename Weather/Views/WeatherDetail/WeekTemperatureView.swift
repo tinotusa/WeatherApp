@@ -20,7 +20,7 @@ struct WeekTemperatureView: View {
                                 .foregroundColor(Color("highlight").opacity(0.2))
                         }
                         VStack {
-                            Text("\(Weekday.weekday(from: day.date).shortName)")
+                            Text("\(Weekday.weekday(from: day.date.addingTimeInterval(weather.timezone_offset)).shortName)")
                             Image(systemName: iconName(for: day.iconID))
                                 .symbolRenderingMode(.multicolor)
                             Text(day.dayTemp)

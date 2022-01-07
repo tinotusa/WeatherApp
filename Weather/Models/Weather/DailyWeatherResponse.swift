@@ -90,8 +90,9 @@ struct HourlyItem: Codable, Hashable, Equatable, Identifiable {
         weather.first!.id
     }
     
-    var formattedTime: String {
+    func formattedTime(offset: Double = 0.0) -> String {
         let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
         formatter.timeStyle = .short
         let dateComponenets = Calendar.current.dateComponents([.hour], from: date)
         let currentCompoenets = Calendar.current.dateComponents([.hour], from: Date())
@@ -99,9 +100,9 @@ struct HourlyItem: Codable, Hashable, Equatable, Identifiable {
            dateHour == currentHour {
             return "Now"
         }
-        return formatter.string(from: date)
+        return formatter.string(from: date.addingTimeInterval(offset))
     }
-    
+
 }
 
 struct WeatherAlert: Codable {
@@ -340,15 +341,17 @@ extension DailyWeatherResponse {
     
     private func alertDateFormatter(_ date: Date) -> String {
         let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        formatter.timeStyle = .short
         formatter.dateStyle = .medium
         return formatter.string(from: date)
     }
     var formattedAlertStartDate: String {
-        alertDateFormatter(alertStartDate ?? Date())
+        alertDateFormatter(alertStartDate?.addingTimeInterval(timezone_offset) ?? Date())
     }
     
     var formattedAlertEndDate: String {
-        alertDateFormatter(alertEndDate ?? Date())
+        alertDateFormatter(alertEndDate?.addingTimeInterval(timezone_offset) ?? Date())
     }
 }
 
@@ -377,15 +380,16 @@ extension DailyWeatherResponse {
     private func dateFormatter(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
         return formatter.string(from: date)
     }
     
     var sunrise: String {
-        dateFormatter(current.sunrise)
+        dateFormatter(current.sunrise.addingTimeInterval(timezone_offset))
     }
     
     var sunset: String {
-        dateFormatter(current.sunset)
+        dateFormatter(current.sunset.addingTimeInterval(timezone_offset))
     }
     
     var windSpeed: String {

@@ -20,7 +20,7 @@ struct HourlyRow: View {
                                 .foregroundColor(Color("highlight").opacity(0.2))
                         }
                         VStack(spacing: 0) {
-                            Text("\(hour.formattedTime)")
+                            Text("\(hour.formattedTime(offset: weather.timezone_offset))")
                             Image(systemName: iconName(for: hour.iconID))
                                 .renderingMode(.original)
                                 .font(.largeTitle)
