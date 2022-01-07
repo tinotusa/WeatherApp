@@ -80,9 +80,14 @@ private extension HomeView {
                                 of: [DailyWeatherResponse.typeIdentifier],
                                 delegate: WeatherRowDropDelegate(
                                     weatherList: $viewModel.weather,
-                                    currentWeather: weather, draggedWeather: draggedWeather
+                                    currentWeather: weather,
+                                    draggedWeather: draggedWeather
                                 )
                             )
+                    }
+                    Spacer()
+                    Link(destination: URL(string: "https://openweathermap.org")!) {
+                        Text("Weather data from OpenWeatherMap.org")
                     }
                 }
             }
