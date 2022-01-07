@@ -34,16 +34,11 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         let status = manager.authorizationStatus
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
-            print("here authorized")
             locationManager.requestLocation()
-        case .notDetermined:
-            print("here not determined")
-        case .denied:
-            print("here denied")
-        case .restricted:
-            print("here restricted")
-        default:
-            print("here")
+//        case .notDetermined: break
+//        case .denied: break
+//        case .restricted: break
+        default: break
         }
     }
 }
