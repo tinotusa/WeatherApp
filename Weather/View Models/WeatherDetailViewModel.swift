@@ -28,4 +28,16 @@ extension WeatherDetailViewModel {
     var photoURL: URL? {
         return weather.unsplashedPhoto?.urls.regular
     }
+    
+    var photoCreditURL: URL? {
+        weather.photoCreditURL
+    }
+    
+    var photoCreditName: String? {
+        weather.photoCreditName
+    }
+    
+    var photoCreditProfileURL: URL? {
+        weather.userPhotoURL
+    }
 }

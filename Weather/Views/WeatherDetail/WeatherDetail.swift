@@ -36,6 +36,7 @@ struct WeatherDetail: View {
                     MoreInfoGrid(weather: detailViewModel.weather)
                     
                     Spacer()
+                    photoCredit
                 }
                 .padding(.horizontal)
                 
@@ -65,6 +66,26 @@ struct WeatherDetail: View {
 
 private extension WeatherDetail {
     @ViewBuilder
+    var photoCredit: some View {
+        if detailViewModel.photoCreditURL != nil {
+            Link(destination: detailViewModel.photoCreditURL!) {
+                HStack {
+                    Text("Photo by: \(detailViewModel.photoCreditName!)")
+                        .foregroundColor(Color("text"))
+                    AsyncImage(url: detailViewModel.photoCreditProfileURL) { image in
+                        image
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .clipShape(Circle())
+                    } placeholder: {
+                        ProgressView()
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
     var backgroundImage: some View {
         AsyncImage(url: detailViewModel.photoURL) { image in
             image
@@ -73,15 +94,8 @@ private extension WeatherDetail {
                 .ignoresSafeArea()
                 .blur(radius: 10)
         } placeholder: {
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                }
-                Spacer()
-            }
+            ProgressView()
+                .centered()
         }
     }
 }

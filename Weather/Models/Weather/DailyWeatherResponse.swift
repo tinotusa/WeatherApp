@@ -178,6 +178,7 @@ class DailyWeatherResponse: NSObject, Codable, Identifiable {
 {
     "lat": 33.44,
     "lon": -94.04,
+    "timezone_offset": -21600,
     "daily":
     [
         {
@@ -289,6 +290,25 @@ class DailyWeatherResponse: NSObject, Codable, Identifiable {
 """
         let data = text.data(using: .utf8)!
         return try! JSONDecoder().decode(DailyWeatherResponse.self, from: data)
+    }
+}
+
+// MARK: - functions for unsplashed user
+extension DailyWeatherResponse {
+    var photoCredit: UnsplashedUser? {
+        unsplashedPhoto?.user
+    }
+    
+    var photoCreditName: String? {
+        photoCredit?.name
+    }
+    
+    var photoCreditURL: URL? {
+        photoCredit?.links.html
+    }
+    
+    var userPhotoURL: URL? {
+        photoCredit?.profileImage.small
     }
 }
 
