@@ -29,15 +29,18 @@ struct WeatherWarning: View {
                         systemImage: showMore ? "chevron.up" : "chevron.down")
                 }
             }
-            
-            Text(weather.alerts!.first!.event)
-            
-            if showMore {
-                ScrollView(showsIndicators: false) {
-                    Text(weather.alerts!.first!.description)
-                        .textSelection(.enabled)
+            if weather.hasAlert {
+                Text(weather.alertEvent!)
+                Text("From: \(weather.formattedAlertStartDate) To: \(weather.formattedAlertEndDate)")
+                Text("By: \(weather.alertSenderName!)")
+                
+                if showMore {
+                    ScrollView {
+                        Text(weather.alerts!.first!.description)
+                            .textSelection(.enabled)
+                    }
+                    .frame(maxHeight: 200)
                 }
-                .frame(maxHeight: 200)
             }
         }
         .padding()

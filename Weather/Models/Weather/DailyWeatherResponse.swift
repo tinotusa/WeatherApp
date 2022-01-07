@@ -160,10 +160,6 @@ class DailyWeatherResponse: NSObject, Codable, Identifiable {
         return "N/A"
     }
     
-    var hasAlert: Bool {
-        alerts != nil
-    }
-    
     var nextTwelveHours: [HourlyItem] {
         var hours = [HourlyItem]()
         for i in 0 ..< 12 where i < hourly.count {
@@ -296,7 +292,45 @@ class DailyWeatherResponse: NSObject, Codable, Identifiable {
     }
 }
 
-
+// MARK: - functions for alerts
+extension DailyWeatherResponse {
+    var hasAlert: Bool {
+        alerts != nil
+    }
+    
+    var weatherAlert: WeatherAlert? {
+        alerts?.first
+    }
+    
+    var alertStartDate: Date? {
+        weatherAlert?.start
+    }
+    
+    var alertEndDate: Date? {
+        weatherAlert?.end
+    }
+    
+    var alertSenderName: String? {
+        weatherAlert?.senderName
+    }
+    
+    var alertEvent: String? {
+        weatherAlert?.event
+    }
+    
+    private func alertDateFormatter(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: date)
+    }
+    var formattedAlertStartDate: String {
+        alertDateFormatter(alertStartDate ?? Date())
+    }
+    
+    var formattedAlertEndDate: String {
+        alertDateFormatter(alertEndDate ?? Date())
+    }
+}
 
 // MARK: - Functions for the current day
 extension DailyWeatherResponse {
