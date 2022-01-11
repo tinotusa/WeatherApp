@@ -24,9 +24,11 @@ struct WeatherWarning: View {
                         showMore.toggle()
                     }
                 } label: {
-                    Label(
-                        showMore ? "Show less" : "Show more",
-                        systemImage: showMore ? "chevron.up" : "chevron.down")
+                    HStack {
+                        Image(systemName: "chevron.up")
+                            .rotationEffect(.degrees(showMore ? 180 : 0))
+                        Text(showMore ? "Show less" : "Show more")
+                    }
                 }
             }
             if weather.hasAlert {
