@@ -64,33 +64,28 @@ struct MoreInfoGrid: View {
             HStack {
                 InfoItem(systemName: "humidity.fill", title: "Humidity") {
                     Text("\(weather.humidity)")
-                        .font(.system(size: 50))
-                        .foregroundColor(Color("text"))
                         .centered()
                 }
                 InfoItem(systemName: "cloud.rain.fill", title: "Rain") {
                     Text("\(weather.pop)")
-                        .font(.system(size: 50))
-                        .foregroundColor(Color("text"))
                         .centered()
                 }
             }
+            .largeFont()
+            
             HStack {
                 InfoItem(systemName: "wind", title: "Wind Speed") {
                     Text("\(weather.windSpeed)")
-                        .foregroundColor(Color("text"))
-                        .font(.system(size: 50))
                         .centered()
                 }
                 InfoItem(systemName: "wind", title: "Wind direction") {
                     Text("\(weather.windDeg)")
-                        .foregroundColor(Color("text"))
-                        .font(.system(size: 50))
                         .centered()
                 }
             }
-            
+            .largeFont()
         }
+        .foregroundColor(Color("text"))
     }
 }
 

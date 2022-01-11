@@ -336,7 +336,7 @@ extension DailyWeatherResponse {
     }
     
     var alertEvent: String? {
-        weatherAlert?.event
+        weatherAlert?.event.capitalizeFirst
     }
     
     private func alertDateFormatter(_ date: Date) -> String {

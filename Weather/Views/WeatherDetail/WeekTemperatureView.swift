@@ -23,9 +23,10 @@ struct WeekTemperatureView: View {
                             Text("\(Weekday.weekday(from: day.date.addingTimeInterval(weather.timezone_offset)).shortName)")
                             Image(systemName: iconName(for: day.iconID))
                                 .symbolRenderingMode(.multicolor)
+                                .font(.largeTitle)
                             Text(day.dayTemp)
                         }
-                        .font(.title2)
+                        .smallFont()
                         .foregroundColor(Color("text"))
                         .padding()
                     }

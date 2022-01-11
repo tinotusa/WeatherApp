@@ -36,6 +36,7 @@ struct HomeView: View {
         }
         .onReceive(locationManager.$lastLocation) { location in
             Task {
+                // TODO: move me
                 if locationManager.lastLocation != nil {
                     let coords = Coordinates(
                         lon: locationManager.lastLocation!.coordinate.longitude,
@@ -64,7 +65,7 @@ private extension HomeView {
             if !viewModel.hasWeatherItems {
                 Spacer()
                 Text("Search for a location.")
-                    .font(.title)
+                    .bodyFont()
                     .foregroundColor(.secondary)
                 Spacer()
             } else {

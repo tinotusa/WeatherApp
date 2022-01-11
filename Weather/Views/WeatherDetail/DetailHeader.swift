@@ -20,37 +20,35 @@ struct DetailHeader: View {
         VStack(alignment: .leading) {
             Text(weather.place?.fullname ?? "N/A")
                 .multilineTextAlignment(.center)
+            
             HStack {
                 Spacer()
                 VStack {
                     Image(systemName: iconName(for: weather.iconID))
-                        .resizable()
                         .renderingMode(.original)
-                        .frame(width: Constants.iconWidth, height: Constants.iconHeight)
+                        .largeFont()
                     Text("\(weather.temp)")
-                        .font(.system(size: 50))
-                        .bold()
+                        .largeFont()
                     Text("\(weather.weatherDescription.capitalizeFirst)")
                 }
                 Spacer()
             }
+            
             HStack {
                 VStack(alignment: .leading) {
                     Label("\(weather.maxTemp)", systemImage: "thermometer.sun.fill")
-                        .symbolRenderingMode(.multicolor)
                     Label("\(weather.minTemp)", systemImage: "thermometer.snowflake")
-                        .symbolRenderingMode(.multicolor)
                 }
+                .symbolRenderingMode(.multicolor)
+                
                 Spacer()
+                
                 VStack(alignment: .leading) {
                     Label("\(weather.sunrise)", systemImage: "sunrise.fill")
-                        .symbolRenderingMode(.multicolor)
                     Label("\(weather.sunset)", systemImage: "sunset.fill")
-                        .symbolRenderingMode(.multicolor)
                 }
-                
+                .symbolRenderingMode(.multicolor)
             }
-            .font(.title2)
         }
         .padding()
         .foregroundColor(Color("text"))

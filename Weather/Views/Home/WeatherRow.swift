@@ -9,8 +9,8 @@ import SwiftUI
 
 struct WeatherRow: View {
     private struct Constants {
-        static let width = 50.0
-        static let height = 50.0
+        static let width = 25.0
+        static let height = 25.0
         static let imageHeight = 150.0
     }
     
@@ -29,8 +29,8 @@ struct WeatherRow: View {
                                 .renderingMode(.original)
                                 .resizable()
                                 .frame(width: Constants.width / 2, height: Constants.height / 2)
-                            Text(weather.alerts!.first!.event)
-                                .font(.title3)
+                            Text(weather.alertEvent!)
+                                .smallFont()
                         }
                         .padding(.top)
                     }
@@ -39,8 +39,7 @@ struct WeatherRow: View {
                     
                     HStack {
                         Text(weather.name.isEmpty ? "Your location" : weather.name)
-                            .font(.largeTitle)
-                            .bold()
+                            .rowTitleFont()
                         Spacer()
                         temperatures
                     }
@@ -60,12 +59,12 @@ private extension WeatherRow {
         HStack {
             Image(systemName: iconName(for: weather.iconID))
                 .renderingMode(.original)
-                .resizable()
-                .frame(width: Constants.width, height: Constants.height)
+//                .resizable()
+//                .frame(width: Constants.width, height: Constants.height)
             Text("\(weather.temp)")
-                .font(.system(size: 50))
-                .bold()
+//                .rowTempFont()
         }
+        .largeFont()
         .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
     }
     

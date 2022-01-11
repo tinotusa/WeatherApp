@@ -26,7 +26,7 @@ struct HourlyRow: View {
                                 .font(.largeTitle)
                             Text(formatTemp(hour.temp))
                         }
-                        .font(.title2)
+                        .smallFont()
                         .foregroundColor(Color("text"))
                         .padding()
                     }
