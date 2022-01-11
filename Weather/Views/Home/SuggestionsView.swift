@@ -55,7 +55,7 @@ private extension SuggestionsView {
                         Text(suggestion.text)
                     }
                     .accessibilityIdentifier("weatherButton")
-                    Text(suggestion.text)
+                    .buttonStyle(.plain)
                 }
             }
             
