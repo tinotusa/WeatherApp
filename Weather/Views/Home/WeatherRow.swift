@@ -59,10 +59,7 @@ private extension WeatherRow {
         HStack {
             Image(systemName: iconName(for: weather.iconID))
                 .renderingMode(.original)
-//                .resizable()
-//                .frame(width: Constants.width, height: Constants.height)
             Text("\(weather.temp)")
-//                .rowTempFont()
         }
         .largeFont()
         .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 4)
@@ -70,21 +67,17 @@ private extension WeatherRow {
     
     @ViewBuilder
     var headerImage: some View {
-        if weather.unsplashedPhoto == nil {
-            Color.gray
+        ImageLoaderView(url: weather.unsplashedPhoto?.urls.regular) { image in
+            image
+                .resizable()
+                .scaledToFill()
                 .frame(height: Constants.imageHeight)
-        } else {
-            AsyncImage(url: weather.unsplashedPhoto?.urls.regular) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: Constants.imageHeight)
-                    .clipped()
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(height: Constants.imageHeight)
+                .clipped()
+        } placeholder: {
+            ProgressView()
+                .centered()
         }
+        .frame(height: Constants.imageHeight)
     }
 }
 

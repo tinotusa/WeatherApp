@@ -40,7 +40,6 @@ struct HomeView: View {
             }
         }
         .task {
-            URLCache.shared.memoryCapacity = 1024 * 1024 * 256
             await viewModel.loadWeather()
         }
     }
