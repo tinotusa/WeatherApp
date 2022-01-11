@@ -37,6 +37,22 @@ final class WeatherViewModel: ObservableObject {
     }
     
     @MainActor
+    func addUserLocation(_ locationManager: LocationManager) async {
+        if locationManager.lastLocation != nil {
+            let coords = Coordinates(
+                lon: locationManager.lastLocation!.coordinate.longitude,
+                lat: locationManager.lastLocation!.coordinate.latitude
+            )
+            guard let place = await NetworkManager.loadPlace(lon: coords.lon, lat: coords.lat) else { return }
+            guard let weatherResponse = await NetworkManager.loadDailyWeather(for: coords, place: place.convertToGeoResponse()) else { return }
+            if !weather.contains(where: {$0.place?.cityID == place.id }) {
+                weather.insert(weatherResponse, at: 0)
+                save()
+            }
+        }
+    }
+    
+    @MainActor
     func addLocation(_ weather: DailyWeatherResponse) async {
         weatherModel.addLocation(weather)
     }

@@ -36,19 +36,7 @@ struct HomeView: View {
         }
         .onReceive(locationManager.$lastLocation) { location in
             Task {
-                // TODO: move me
-                if locationManager.lastLocation != nil {
-                    let coords = Coordinates(
-                        lon: locationManager.lastLocation!.coordinate.longitude,
-                        lat: locationManager.lastLocation!.coordinate.latitude
-                    )
-                    guard let place = await NetworkManager.loadPlace(lon: coords.lon, lat: coords.lat) else { return }
-                    guard let weather = await NetworkManager.loadDailyWeather(for: coords, place: place.convertToGeoResponse()) else { return }
-                    if !viewModel.weather.contains(where: {$0.place?.cityID == place.id }) {
-                        viewModel.weather.insert(weather, at: 0)
-                        viewModel.save()
-                    }
-                }
+                await viewModel.addUserLocation(locationManager)
             }
         }
         .task {
