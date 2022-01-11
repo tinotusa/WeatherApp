@@ -31,16 +31,22 @@ struct WeatherWarning: View {
             }
             if weather.hasAlert {
                 Text(weather.alertEvent!)
-                Text("From: \(weather.formattedAlertStartDate)")
-                Text("To: \(weather.formattedAlertEndDate)")
-                Text("By: \(weather.alertSenderName!)")
                 
                 if showMore {
                     ScrollView {
+                        VStack(alignment: .leading) {
+                            Text("From: \(weather.formattedAlertStartDate)")
+                            Text("To: \(weather.formattedAlertEndDate)")
+                            Text("By: \(weather.alertSenderName!)")
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Divider()
                         Text(weather.alerts!.first!.description)
                             .textSelection(.enabled)
                     }
-                    .frame(maxHeight: 200)
+                    .frame(maxHeight: 200, alignment: .leading)
+                    
                 }
             }
         }
