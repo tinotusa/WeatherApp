@@ -44,8 +44,9 @@ struct WeatherWarning: View {
                         Divider()
                         Text(weather.alerts!.first!.description)
                             .textSelection(.enabled)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .frame(maxHeight: 200, alignment: .leading)
+                    .frame(maxHeight: 200)
                     
                 }
             }

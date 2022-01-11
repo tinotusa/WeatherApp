@@ -24,6 +24,7 @@ struct HomeView: View {
                 }
                 .navigationTitle("Weather")
         }
+        .navigationViewStyle(.stack)
         .searchable(
             text: $searchText,
             placement: .navigationBarDrawer(displayMode: .always),
