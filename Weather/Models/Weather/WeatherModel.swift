@@ -12,8 +12,8 @@ struct WeatherModel {
     var weatherLocations = [DailyWeatherResponse]()
     
     mutating func addLocation(_ location: DailyWeatherResponse) {
-        if weatherLocations.contains(location) {
-           return
+        if weatherLocations.firstIndex(where: { $0.place!.fullname == location.place!.fullname }) != nil {
+            return
         }
         weatherLocations.append(location)
         save()
