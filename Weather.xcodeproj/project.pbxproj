@@ -37,6 +37,7 @@
 		2175206327859D8A00E759C3 /* View+UltraThinMaterialShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175206227859D8A00E759C3 /* View+UltraThinMaterialShadow.swift */; };
 		217520652785B24900E759C3 /* WeatherWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217520642785B24900E759C3 /* WeatherWarning.swift */; };
 		2193467827819ADC00AB9ADB /* WeatherDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2193467727819ADC00AB9ADB /* WeatherDetailViewModel.swift */; };
+		21B321E0278FABEE00C1B140 /* WeatherRowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B321DF278FABEE00C1B140 /* WeatherRowsView.swift */; };
 		21D70BF1278D336300D2B696 /* WeatherRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D70BF0278D336300D2B696 /* WeatherRow.swift */; };
 		21D70BF3278D3A6200D2B696 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D70BF2278D3A6200D2B696 /* ImageLoader.swift */; };
 		21D70BF5278D3A9600D2B696 /* ImageLoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D70BF4278D3A9600D2B696 /* ImageLoaderView.swift */; };
@@ -93,6 +94,7 @@
 		2175206227859D8A00E759C3 /* View+UltraThinMaterialShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+UltraThinMaterialShadow.swift"; sourceTree = "<group>"; };
 		217520642785B24900E759C3 /* WeatherWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWarning.swift; sourceTree = "<group>"; };
 		2193467727819ADC00AB9ADB /* WeatherDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailViewModel.swift; sourceTree = "<group>"; };
+		21B321DF278FABEE00C1B140 /* WeatherRowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRowsView.swift; sourceTree = "<group>"; };
 		21D70BF0278D336300D2B696 /* WeatherRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRow.swift; sourceTree = "<group>"; };
 		21D70BF2278D3A6200D2B696 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		21D70BF4278D3A9600D2B696 /* ImageLoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoaderView.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				212AA7D22754E5010061CCBC /* HomeView.swift */,
 				213631D8275B5F7D004D6261 /* SuggestionsView.swift */,
 				21D70BF0278D336300D2B696 /* WeatherRow.swift */,
+				21B321DF278FABEE00C1B140 /* WeatherRowsView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -417,6 +420,7 @@
 			files = (
 				21D70BF5278D3A9600D2B696 /* ImageLoaderView.swift in Sources */,
 				213631D9275B5F7D004D6261 /* SuggestionsView.swift in Sources */,
+				21B321E0278FABEE00C1B140 /* WeatherRowsView.swift in Sources */,
 				212AA7D32754E5010061CCBC /* HomeView.swift in Sources */,
 				210F711A278864DE000B90FA /* TextStyles.swift in Sources */,
 				216B8B2A2765AE05001E4FC5 /* WeekTemperatureView.swift in Sources */,

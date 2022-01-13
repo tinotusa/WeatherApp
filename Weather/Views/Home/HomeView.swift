@@ -12,17 +12,10 @@ struct HomeView: View {
     @EnvironmentObject var viewModel: WeatherViewModel
     @State private var searchText = ""
     @StateObject var locationManager = LocationManager()
-    @State private var draggedWeather: DailyWeatherResponse?
     
     var body: some View {
         NavigationView {
-            homeView
-                .overlay {
-                    if !searchText.isEmpty {
-                        SuggestionsView()
-                    }
-                }
-                .navigationTitle("Weather")
+            WeatherRowsView()
         }
         .navigationViewStyle(.stack)
         .searchable(
@@ -43,45 +36,6 @@ struct HomeView: View {
         .task {
             await viewModel.loadWeather()
         }
-    }
-}
-
-private extension HomeView {
-    @ViewBuilder
-    var homeView: some View {
-        VStack {
-            if !viewModel.hasWeatherItems {
-                Spacer()
-                Text("Search for a location.")
-                    .bodyFont()
-                    .foregroundColor(.secondary)
-                Spacer()
-            } else {
-                ScrollView(showsIndicators: false) {
-                    ForEach(viewModel.weather) { weather in
-                        WeatherRow(weather: weather)
-                            .disabled(viewModel.isLoading)
-                            .onDrag {
-                                draggedWeather = weather
-                                return NSItemProvider(object: weather)
-                            } 
-                            .onDrop(
-                                of: [DailyWeatherResponse.typeIdentifier],
-                                delegate: WeatherRowDropDelegate(
-                                    weatherList: $viewModel.weather,
-                                    currentWeather: weather,
-                                    draggedWeather: draggedWeather
-                                )
-                            )
-                    }
-                    Spacer()
-                    Link(destination: URL(string: "https://openweathermap.org")!) {
-                        Text("Weather data from OpenWeatherMap.org")
-                    }
-                }
-            }
-        }
-        .frame(maxWidth: .infinity)
     }
 }
 
