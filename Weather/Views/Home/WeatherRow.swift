@@ -39,6 +39,7 @@ struct WeatherRow: View {
                     
                     HStack {
                         Text(weather.name.isEmpty ? "Your location" : weather.name)
+                            .lineLimit(1)
                             .rowTitleFont()
                         Spacer()
                         temperatures
