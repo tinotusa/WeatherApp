@@ -11,6 +11,13 @@ struct WeatherModel {
     var suggestions = [GeoResponse]()
     var weatherLocations = [DailyWeatherResponse]()
     
+    mutating func addLocationFromSuggestion(coords: Coordinates, place: GeoResponse) async {
+        guard let weather = await NetworkManager.loadDailyWeather(for: coords, place: place) else {
+            return
+        }
+        addLocation(weather)
+    }
+    
     mutating func addLocation(_ location: DailyWeatherResponse) {
         if weatherLocations.firstIndex(where: { $0.place!.fullname == location.place!.fullname }) != nil {
             return

@@ -53,6 +53,11 @@ final class WeatherViewModel: ObservableObject {
     }
     
     @MainActor
+    func addLocationFromSuggestion(coords: Coordinates, place: GeoResponse) async {
+        await weatherModel.addLocationFromSuggestion(coords: coords, place: place)
+    }
+    
+    @MainActor
     func addLocation(_ weather: DailyWeatherResponse) async {
         weatherModel.addLocation(weather)
     }

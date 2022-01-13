@@ -45,10 +45,7 @@ private extension SuggestionsView {
                 ForEach(weatherViewModel.suggestions) { suggestion in
                     Button {
                         Task {
-                            guard let weather = await NetworkManager.loadDailyWeather(for: suggestion.coord, place: suggestion) else {
-                                return
-                            }
-                            await weatherViewModel.addLocation(weather)
+                            await weatherViewModel.addLocationFromSuggestion(coords: suggestion.coord, place: suggestion)
                         }
                         dismissSearch()
                     } label: {
