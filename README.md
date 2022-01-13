@@ -1,11 +1,12 @@
 # Weather ☁️
 A simple weather app that pulls data from [OpenWeatherMap](openweathermap.org)
+Background pictures from [Unsplash](unsplash.com)
 
 ### TODO:
-- [x] Get pictures from unsplashed
+- [x] Get pictures from unsplash
 - [x] Add hourly temperature data
 - [x] Get weekly temperature data
-- [ ] Update UI
+- [x] Update UI
 
 ### Current progress
 |  |  |
